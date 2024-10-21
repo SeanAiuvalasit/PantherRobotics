@@ -52,6 +52,7 @@ public class linearTest extends LinearOpMode {
         while(opModeIsActive()){   //up
             if(gamepad1.a){
                 telemetry.addData("hardware: ", "right");
+                telemetry.update();
                 leftSlide.setPower(0);
                 rightSlide.setPower(0);
                 left.setTargetPosition(-268);
@@ -66,6 +67,7 @@ public class linearTest extends LinearOpMode {
             }
             if(gamepad1.b){   //down
                 telemetry.addData("hardware: ", "left");
+                telemetry.update();
                 leftSlide.setPower(0);
                 rightSlide.setPower(0);
                 left.setTargetPosition(0);
