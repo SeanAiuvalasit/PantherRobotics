@@ -72,14 +72,63 @@ public class linearTest extends LinearOpMode {
                 rightSlide.setPower(0);
                 left.setTargetPosition(0);
                 left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                left.setPower(0.19);
+                left.setPower(0.075);
                 right.setTargetPosition(0);
+                right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                right.setPower(0.075);
+                left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            }
+
+            if(gamepad1.x) {
+                telemetry.addData("hardware: ", "up");
+                telemetry.update();
+                leftSlide.setPower(0);
+                rightSlide.setPower(0);
+                left.setTargetPosition(-536);
+                //left.setTargetPositionTolerance()
+                left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                left.setPower(0.19);
+                right.setTargetPosition(536);
                 right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 right.setPower(0.19);
                 left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             }
 
+            if(gamepad1.dpad_up){
+                telemetry.addData("hardware: ", "vertical slide up");
+                telemetry.update();
+                left.setPower(0);
+                right.setPower(0);
+
+                leftSlide.setTargetPosition(-360);
+                //left.setTargetPositionTolerance()
+                leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                leftSlide.setPower(0.1);
+                rightSlide.setTargetPosition(360);
+                rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rightSlide.setPower(0.1);
+                leftSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                rightSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            }
+
+            if(gamepad1.dpad_down){
+                telemetry.addData("hardware: ", "vertical slide down");
+                telemetry.update();
+                left.setPower(0);
+                right.setPower(0);
+
+                leftSlide.setTargetPosition(0);
+                //left.setTargetPositionTolerance()
+                leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                leftSlide.setPower(0.1);
+                rightSlide.setTargetPosition(0);
+                rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rightSlide.setPower(0.1);
+                leftSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                rightSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            }
         }
     }
 }
