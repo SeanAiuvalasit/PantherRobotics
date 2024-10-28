@@ -16,7 +16,7 @@ import org.firstinspires.ftc.robotcore.external.JavaUtil;
 
 @TeleOp(name = "linearTest")
 public class linearTest extends LinearOpMode {
-    //   HardwareMap hware = new HardwareMap();
+       //Hware hware = new Hware(hardwareMap);
     //DcMotor motor;
     //tick value - 537.7
     //5,281.1 - new tick value
@@ -55,24 +55,84 @@ public class linearTest extends LinearOpMode {
         waitForStart();
 
         while(opModeIsActive()){   //up
+            /**
+             //Mecanum drive code
+             *double drive, turn, strafe;
+             *
+             //under waitForStop()
+             *
+             *  drive = gamepad1.left_stick_y * -1;
+             *  turn = gamepad1.right_stick_x;
+             *  strafe = gamepad1.left_stick_x;
+             *
+             *  //strafe
+             *  fLeftPower = drive + turn + strafe;
+             *  fRightPower = drive - turn - strafe;
+             *  bLeftPower = drive + turn - strafe;
+             *  bRightPower = drive - turn + strafe;
+             *
+             *  double[] appliedPowers = scalePowers(fLeftPower, fRightPower, bLeftPower, bRightPower);
+             *
+             *  leftFront.setPower(appliedPowers[0]);
+             *  leftBack.setPower(appliedPowers[2]);
+             *  rightFront.setPower(appliedPowers[1]);
+             *  rightBack.setPower(appliedPowers[3]);
+             *
+             *
+             //outside of opModeIsActive()
+             * public double[] scalePowers(double fLeftPower, double fRightPower, double bLeftPower, double bRightPower){
+             *      double max = Math.max(Math.abs(fLeftPower), Math.max(Math.abs(fRightPower), Math.max(Math.abs(bLeftPower), Math.max(Math.abs(bRightPower))));
+             *      if(max > 1){
+             *          fLeftPower /= max;
+             *          fRightPower /= max;
+             *          bLeftPower /= max;
+             *          bRightPower /= max;
+             *      }
+             *
+             *      double [] motorPowers = new double[]{fLeftPower, fRightPower, bLeftPower, bRightPower};
+             *      return motorPowers;
+             */
 
+            double slide;
             telemetry.addData("hardware: ", left.getCurrentPosition());
             telemetry.update();
-            if(gamepad1.a){
-                //telemetry.addData("hardware: ", "right");
-                //telemetry.update();
-                leftSlide.setPower(0);
-                rightSlide.setPower(0);
-                left.setTargetPosition(tick/-15);
-                //left.setTargetPositionTolerance()
+            /**
+             * Rotates the left and right motor by the amount given by right_stick_y
+             * multiplied by 0.5
+             */
+            left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            slide = gamepad1.right_stick_y * 0.5;
+            if(slide==0){
+                left.setPower(0.0000000000000000000000001);
+                right.setPower(0.0000000000000000000000001);
+                left.setTargetPosition(left.getCurrentPosition());
+                right.setTargetPosition(right.getCurrentPosition());
+                //left.setTargetPosition();
                 left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                left.setPower(0.2);
-                right.setTargetPosition(tick/15);
                 right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                right.setPower(0.2);
                 left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             }
+                //left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+                left.setPower(slide);
+                left.setTargetPosition(left.getCurrentPosition());
+
+                //right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                right.setPower(slide * -1);
+                left.setTargetPosition(right.getCurrentPosition());
+
+                /**
+                right.setTargetPosition(tick/15);
+                left.setTargetPosition(tick/-15);
+                //telemetry.addData("hardware: ", "right");
+                //telemetry.update();
+                //left.setTargetPositionTolerance()
+                */
+                left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
             if(gamepad1.b){   //down
                 //telemetry.addData("hardware: ", "left");
                 //telemetry.update();
