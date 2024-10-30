@@ -133,7 +133,21 @@ public class linearTest extends LinearOpMode {
                 */
                 left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
+              if(gamepad1.a){//up
+                telemetry.addData("hardware: ", "right");
+                telemetry.update();
+                leftSlide.setPower(0);
+                rightSlide.setPower(0);
+                left.setTargetPosition((int)(tick/-12));
+                //left.setTargetPositionTolerance()
+                left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                left.setPower(0.19);
+                right.setTargetPosition((int)(tick/12));
+                right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                right.setPower(0.19);
+                left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            }
             if(gamepad1.b){   //down
                 //telemetry.addData("hardware: ", "left");
                 //telemetry.update();
