@@ -104,6 +104,7 @@ public class linearTest extends LinearOpMode {
             left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             slide = gamepad1.right_stick_y * 0.5;
+               /**        this is for teh slide to hold its position
             if(slide==0){
                 left.setPower(0.0000000000000000000000001);
                 right.setPower(0.0000000000000000000000001);
@@ -115,6 +116,7 @@ public class linearTest extends LinearOpMode {
                 left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             }
+            */
                 //left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
                 left.setPower(slide);
