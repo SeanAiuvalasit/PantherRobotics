@@ -99,6 +99,7 @@ public class linearTest extends LinearOpMode {
             /**
              * Rotates the left and right motor by the amount given by right_stick_y
              * multiplied by 0.5
+             * commet
              */
             left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
