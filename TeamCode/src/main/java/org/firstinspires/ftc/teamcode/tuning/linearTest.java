@@ -21,6 +21,7 @@ public class linearTest extends LinearOpMode {
     //tick value - 537.7
     //5,281.1 - new tick value
     int tick = 5281;
+       int encoderValue = 0;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -221,18 +222,33 @@ public class linearTest extends LinearOpMode {
                 rightSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             }
                */
-              int encoderValue = 0;
+              
+              if(gamepad1.dpad_up){
                while(gamepad1.dpad_up){
               encoderValue+=50;
+               }
               left.setTargetPosition(encoderValue);
                 left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 left.setPower(0.2);
-                right.setTargetPosition(encoderValue);
+                right.setTargetPosition(-1*encoderValue);
                 right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 right.setPower(0.2);
                 left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+              }
+              if(gamepad1.dpad_down){
+               while(gamepad1.dpad_down){
+              encoderValue-=50;
                }
+              left.setTargetPosition(encoderValue);
+                left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                left.setPower(0.2);
+                right.setTargetPosition(-1*encoderValue);
+                right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                right.setPower(0.2);
+                left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+              }
         }
     }
 }
