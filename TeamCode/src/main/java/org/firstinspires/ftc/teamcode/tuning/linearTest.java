@@ -180,7 +180,7 @@ public class linearTest extends LinearOpMode {
                 left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             }
-
+              /**
             if(gamepad1.dpad_up){
                 telemetry.addData("hardware: ", "vertical slide up");
                 telemetry.update();
@@ -203,7 +203,7 @@ public class linearTest extends LinearOpMode {
                 leftSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 rightSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             }
-
+              
             if(gamepad1.dpad_down){
                 telemetry.addData("hardware: ", "vertical slide down");
                 telemetry.update();
@@ -220,6 +220,19 @@ public class linearTest extends LinearOpMode {
                 leftSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 rightSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             }
+               */
+              int encoderValue = 0;
+               while(gamepad1.dpad_up){
+              encoderValue+=50;
+              left.setTargetPosition(encoderValue);
+                left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                left.setPower(0.2);
+                right.setTargetPosition(encoderValue);
+                right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                right.setPower(0.2);
+                left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+               }
         }
     }
 }
