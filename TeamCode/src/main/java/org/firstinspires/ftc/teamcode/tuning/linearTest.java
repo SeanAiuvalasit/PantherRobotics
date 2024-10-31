@@ -95,7 +95,7 @@ public class linearTest extends LinearOpMode {
              */
 
             double slide;
-            telemetry.addData("hardware: ", left.getCurrentPosition());
+            telemetry.addData("hardware: ", left.getCurrentPosition() +" " + right.getCurrentPosition());
             telemetry.update();
             /**
              * Rotates the left and right motor by the amount given by right_stick_y
@@ -136,21 +136,22 @@ public class linearTest extends LinearOpMode {
                 */
                 left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
               if(gamepad1.a){//up
-                telemetry.addData("hardware: ", "right");
-                telemetry.update();
-                leftSlide.setPower(0);
-                rightSlide.setPower(0);
-                left.setTargetPosition((int)(tick/-12));
-                //left.setTargetPositionTolerance()
-                left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                left.setPower(0.19);
-                right.setTargetPosition((int)(tick/12));
-                right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                right.setPower(0.19);
-                left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            }
+             telemetry.addData("hardware: ", "right");
+             telemetry.update();
+            leftSlide.setPower(0);
+            rightSlide.setPower(0);
+             left.setTargetPosition((int)(tick/-12));
+             //left.setTargetPositionTolerance()
+            left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+             left.setPower(1);
+            right.setTargetPosition((int)(tick/12));
+            right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+             right.setPower(1);
+             left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+             }
             if(gamepad1.b){   //down
                 //telemetry.addData("hardware: ", "left");
                 //telemetry.update();
@@ -171,11 +172,11 @@ public class linearTest extends LinearOpMode {
                 //telemetry.update();
                 leftSlide.setPower(0);
                 rightSlide.setPower(0);
-                left.setTargetPosition((int)(tick/-10.75));
+                left.setTargetPosition((int)(tick/10.75));
                 //left.setTargetPositionTolerance()
                 left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 left.setPower(0.2);
-                right.setTargetPosition((int)(tick/10.75));
+                right.setTargetPosition((int)(tick/-10.75));
                 right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 right.setPower(0.2);
                 left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
