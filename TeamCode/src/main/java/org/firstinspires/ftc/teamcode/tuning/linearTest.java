@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -25,13 +26,13 @@ public class linearTest extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        DcMotor leftSlide = hardwareMap.get(DcMotor.class, "leftSlide");
-        DcMotor rightSlide = hardwareMap.get(DcMotor.class, "rightSlide");
-        DcMotor left = hardwareMap.get(DcMotor.class, "left");
-        DcMotor right = hardwareMap.get(DcMotor.class, "right");
+        DcMotor leftSlide = hardwareMap.get(DcMotorEx.class, "leftSlide");
+        DcMotor rightSlide = hardwareMap.get(DcMotorEx.class, "rightSlide");
+        DcMotor left = hardwareMap.get(DcMotorEx.class, "left");
+        DcMotor right = hardwareMap.get(DcMotorEx.class, "right");
 
         telemetry.addData("hardware: ", "Initialize");
-        leftSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftSlide.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         leftSlide.setDirection(DcMotor.Direction.FORWARD);
         leftSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -134,32 +135,38 @@ public class linearTest extends LinearOpMode {
                 //telemetry.update();
                 //left.setTargetPositionTolerance()
                 */
-                left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+                if(slide==0) {
+                    left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                    right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                }
               if(gamepad1.a){//up
-                telemetry.addData("hardware: ", "right");
-                telemetry.update();
-                leftSlide.setPower(0);
-                rightSlide.setPower(0);
-                left.setTargetPosition((int)(tick/-12));
-                //left.setTargetPositionTolerance()
-                left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                left.setPower(0.19);
-                right.setTargetPosition((int)(tick/12));
-                right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                right.setPower(0.19);
-                left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            }
+                telemetry.addData("hardware: ", "right");
+                telemetry.update();
+                 leftSlide.setPower(0);
+                 rightSlide.setPower(0);
+                 left.setTargetPosition((int)(tick/-12));
+                 ((DcMotorEx) left).setTargetPositionTolerance(1);
+                left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                 left.setPower(0.5);
+                right.setTargetPosition((int)(tick/12));
+                  ((DcMotorEx) right).setTargetPositionTolerance(1);
+                 right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                 right.setPower(0.5);
+                 left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                 right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            }
             if(gamepad1.b){   //down
                 //telemetry.addData("hardware: ", "left");
                 //telemetry.update();
                 leftSlide.setPower(0);
                 rightSlide.setPower(0);
                 left.setTargetPosition(0);
+                ((DcMotorEx) left).setTargetPositionTolerance(1);
                 left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 left.setPower(0.2);
                 right.setTargetPosition(0);
+                ((DcMotorEx) right).setTargetPositionTolerance(1);
                 right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 right.setPower(0.2);
                 left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -171,11 +178,12 @@ public class linearTest extends LinearOpMode {
                 //telemetry.update();
                 leftSlide.setPower(0);
                 rightSlide.setPower(0);
-                left.setTargetPosition((int)(tick/-10.75));
-                //left.setTargetPositionTolerance()
+                left.setTargetPosition((int)(tick/-9));
+                ((DcMotorEx) left).setTargetPositionTolerance(1);
                 left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 left.setPower(0.2);
-                right.setTargetPosition((int)(tick/10.75));
+                right.setTargetPosition((int)(tick/9));
+                ((DcMotorEx) right).setTargetPositionTolerance(1);
                 right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 right.setPower(0.2);
                 left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
