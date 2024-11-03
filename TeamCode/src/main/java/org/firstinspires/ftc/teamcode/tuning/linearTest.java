@@ -96,7 +96,7 @@ public class linearTest extends LinearOpMode {
              */
 
             double slide;
-            telemetry.addData("hardware: ", left.getCurrentPosition());
+            telemetry.addData("hardware: ", rightSlide.getCurrentPosition());
             telemetry.update();
             /**
              * Rotates the left and right motor by the amount given by right_stick_y
@@ -139,6 +139,20 @@ public class linearTest extends LinearOpMode {
                 if(slide==0) {
                     left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                     right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                }
+                if(gamepad1.y){
+                    left.setPower(0);
+                    right.setPower(0);
+                    telemetry.addData("hardware: ", "slide");
+                    telemetry.update();
+                    rightSlide.setTargetPosition(500);
+                    ((DcMotorEx) rightSlide).setTargetPositionTolerance(1);
+                    rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    rightSlide.setPower(0.5);
+                    rightSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                    //right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                    telemetry.addData("hardware: ", rightSlide.getCurrentPosition());
+                    telemetry.update();
                 }
               if(gamepad1.a){//up
                 telemetry.addData("hardware: ", "right");
