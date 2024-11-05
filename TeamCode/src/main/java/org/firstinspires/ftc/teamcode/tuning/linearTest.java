@@ -17,12 +17,12 @@ import org.firstinspires.ftc.robotcore.external.JavaUtil;
 
 @TeleOp(name = "linearTest")
 public class linearTest extends LinearOpMode {
-       //Hware hware = new Hware(hardwareMap);
+    //Hware hware = new Hware(hardwareMap);
     //DcMotor motor;
     //tick value - 537.7
     //5,281.1 - new tick value
     int tick = 5281;
-       int encoderValue = 0;
+    int encoderValue = 0;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -80,8 +80,8 @@ public class linearTest extends LinearOpMode {
                 rightFront.setPower(appliedPowers[1]);
                 rightBack.setPower(appliedPowers[3]);
 
-             //outside of opModeIsActive()
-             public double[] scalePowers(double fLeftPower, double fRightPower, double bLeftPower, double bRightPower){
+            //outside of opModeIsActive()
+            public double[] scalePowers(double fLeftPower, double fRightPower, double bLeftPower, double bRightPower){
                 double max = Math.max(Math.abs(fLeftPower), Math.max(Math.abs(fRightPower), Math.max(Math.abs(bLeftPower), Math.max(Math.abs(bRightPower))));
                 if(max > 1){
                     fLeftPower /= max;
@@ -91,7 +91,7 @@ public class linearTest extends LinearOpMode {
                 }
                 double [] motorPowers = new double[]{fLeftPower, fRightPower, bLeftPower, bRightPower};
                 return motorPowers;
-             }
+            }
 
             double slide;
 
@@ -120,7 +120,6 @@ public class linearTest extends LinearOpMode {
                 right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
 
-
             //left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             if (index == 0) {
                 left.setPower(slide);
@@ -135,7 +134,6 @@ public class linearTest extends LinearOpMode {
             //telemetry.addData("hardware: ", "right");
             //telemetry.update();
             //left.setTargetPositionTolerance()
-
 
             if(slide==0) {
                 left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -171,8 +169,8 @@ public class linearTest extends LinearOpMode {
                 right.setPower(0.5);
                 right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 index = 0;
-//              left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//                 right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                // left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                // right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             }
             if(gamepad1.b){   //down
                 index = 1;
@@ -192,7 +190,6 @@ public class linearTest extends LinearOpMode {
                 right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 index = 0;
             }
-
             if(gamepad1.x) {
                 index = 1;
                 //telemetry.addData("hardware: ", "up");
@@ -211,7 +208,7 @@ public class linearTest extends LinearOpMode {
                 right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 index = 0;
             }
-              /**
+            /*
             if(gamepad1.dpad_up){
                 telemetry.addData("hardware: ", "vertical slide up");
                 telemetry.update();
@@ -251,13 +248,12 @@ public class linearTest extends LinearOpMode {
                 leftSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 rightSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             }
-               */
-              
-              if(gamepad1.dpad_up){
-               while(gamepad1.dpad_up){
-              encoderValue+=50;
-               }
-              left.setTargetPosition(encoderValue);
+            */
+            if(gamepad1.dpad_up){
+                while(gamepad1.dpad_up){
+                    encoderValue+=50;
+                }
+                left.setTargetPosition(encoderValue);
                 left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 left.setPower(0.2);
                 right.setTargetPosition(-1*encoderValue);
@@ -265,20 +261,20 @@ public class linearTest extends LinearOpMode {
                 right.setPower(0.2);
                 left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-              }
-              if(gamepad1.dpad_down){
-               while(gamepad1.dpad_down){
-              encoderValue-=50;
-               }
-              left.setTargetPosition(encoderValue);
-                left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                left.setPower(0.2);
-                right.setTargetPosition(-1*encoderValue);
-                right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                right.setPower(0.2);
-                left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-              }
+            }
+            if(gamepad1.dpad_down) {
+                while(gamepad1.dpad_down){
+                    encoderValue-=50;
+                }
+            left.setTargetPosition(encoderValue);
+            left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            left.setPower(0.2);
+            right.setTargetPosition(-1*encoderValue);
+            right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            right.setPower(0.2);
+            left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            }
         }
     }
 }
