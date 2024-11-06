@@ -49,7 +49,7 @@ public class MecanumDriveTest extends LinearOpMode{
         }
     }
     public double[] scalePowers(double fLeftPower, double fRightPower, double bLeftPower, double bRightPower){
-        double max = Math.max(Math.abs(fLeftPower), Math.max(Math.abs(fRightPower), Math.max(Math.abs(bLeftPower), Math.max(Math.abs(bRightPower))));
+        double max = Math.max(Math.abs(fLeftPower), Math.max(Math.abs(fRightPower), Math.max(Math.abs(bLeftPower), Math.abs(bRightPower))));
         if(max > 1){
             fLeftPower /= max;
             fRightPower /= max;
