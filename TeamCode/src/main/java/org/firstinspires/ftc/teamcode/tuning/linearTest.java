@@ -17,12 +17,12 @@ import org.firstinspires.ftc.robotcore.external.JavaUtil;
 
 @TeleOp(name = "linearTest")
 public class linearTest extends LinearOpMode {
-    //Hware hware = new Hware(hardwareMap);
+       //Hware hware = new Hware(hardwareMap);
     //DcMotor motor;
     //tick value - 537.7
     //5,281.1 - new tick value
     int tick = 5281;
-    int encoderValue = 0;
+    int encoderValue = tick/12;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -32,7 +32,7 @@ public class linearTest extends LinearOpMode {
         DcMotor right = hardwareMap.get(DcMotorEx.class, "right");
 
         telemetry.addData("hardware: ", "Initialize");
-        leftSlide.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        leftSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftSlide.setDirection(DcMotor.Direction.FORWARD);
         leftSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -53,48 +53,51 @@ public class linearTest extends LinearOpMode {
         right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        int index = 0;
 
         waitForStart();
 
         while(opModeIsActive()){   //up
-            /*
-            //Mecanum drive code
-            double drive, turn, strafe;
-
-            //under waitForStop()
-                drive = gamepad1.left_stick_y * -1;
-                turn = gamepad1.right_stick_x;
-                strafe = gamepad1.left_stick_x;
-
-                //strafe
-                fLeftPower = drive + turn + strafe;
-                fRightPower = drive - turn - strafe;
-                bLeftPower = drive + turn - strafe;
-                bRightPower = drive - turn + strafe;
-
-                double[] appliedPowers = scalePowers(fLeftPower, fRightPower, bLeftPower, bRightPower);
-
-                leftFront.setPower(appliedPowers[0]);
-                leftBack.setPower(appliedPowers[2]);
-                rightFront.setPower(appliedPowers[1]);
-                rightBack.setPower(appliedPowers[3]);
-
-            //outside of opModeIsActive()
-            public double[] scalePowers(double fLeftPower, double fRightPower, double bLeftPower, double bRightPower){
-                double max = Math.max(Math.abs(fLeftPower), Math.max(Math.abs(fRightPower), Math.max(Math.abs(bLeftPower), Math.max(Math.abs(bRightPower))));
-                if(max > 1){
-                    fLeftPower /= max;
-                    fRightPower /= max;
-                    bLeftPower /= max;
-                    bRightPower /= max;
-                }
-                double [] motorPowers = new double[]{fLeftPower, fRightPower, bLeftPower, bRightPower};
-                return motorPowers;
-            }
+            /**
+             //Mecanum drive code
+             *double drive, turn, strafe;
+             *
+             //under waitForStop()
+             *
+             *  drive = gamepad1.left_stick_y * -1;
+             *  turn = gamepad1.right_stick_x;
+             *  strafe = gamepad1.left_stick_x;
+             *
+             *  //strafe
+             *  fLeftPower = drive + turn + strafe;
+             *  fRightPower = drive - turn - strafe;
+             *  bLeftPower = drive + turn - strafe;
+             *  bRightPower = drive - turn + strafe;
+             *
+             *  double[] appliedPowers = scalePowers(fLeftPower, fRightPower, bLeftPower, bRightPower);
+             *
+             *  leftFront.setPower(appliedPowers[0]);
+             *  leftBack.setPower(appliedPowers[2]);
+             *  rightFront.setPower(appliedPowers[1]);
+             *  rightBack.setPower(appliedPowers[3]);
+             *
+             *
+             //outside of opModeIsActive()
+             * public double[] scalePowers(double fLeftPower, double fRightPower, double bLeftPower, double bRightPower){
+             *      double max = Math.max(Math.abs(fLeftPower), Math.max(Math.abs(fRightPower), Math.max(Math.abs(bLeftPower), Math.max(Math.abs(bRightPower))));
+             *      if(max > 1){
+             *          fLeftPower /= max;
+             *          fRightPower /= max;
+             *          bLeftPower /= max;
+             *          bRightPower /= max;
+             *      }
+             *
+             *      double [] motorPowers = new double[]{fLeftPower, fRightPower, bLeftPower, bRightPower};
+             *      return motorPowers;
+             */
 
             double slide;
-
+            telemetry.addData("hardware: ", rightSlide.getCurrentPosition());
+            telemetry.update();
             /**
              * Rotates the left and right motor by the amount given by right_stick_y
              * multiplied by 0.5
@@ -102,14 +105,8 @@ public class linearTest extends LinearOpMode {
              */
             left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            /*
             slide = gamepad1.right_stick_y * 0.5;
-            telemetry.addData("hardware: ", slide);
-            telemetry.update();
-            */
-
-            /*
+               /**        this is for teh slide to hold its position
             if(slide==0){
                 left.setPower(0.0000000000000000000000001);
                 right.setPower(0.0000000000000000000000001);
@@ -118,62 +115,62 @@ public class linearTest extends LinearOpMode {
                 //left.setTargetPosition();
                 left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            }
-
-            //left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            if (index == 0) {
-                left.setPower(slide);
-                //left.setTargetPosition(left.getCurrentPosition());
-                //right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                right.setPower(slide * -1);
-                //left.setTargetPosition(right.getCurrentPosition());
-            }
-
-            right.setTargetPosition(tick/15);
-            left.setTargetPosition(tick/-15);
-            //telemetry.addData("hardware: ", "right");
-            //telemetry.update();
-            //left.setTargetPositionTolerance()
-
-            if(slide==0) {
                 left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             }
             */
-            if(gamepad1.y){
-                left.setPower(0);
-                right.setPower(0);
-                telemetry.addData("hardware: ", "slide");
-                telemetry.update();
-                rightSlide.setTargetPosition(-500);
-                ((DcMotorEx) rightSlide).setTargetPositionTolerance(1);
-                rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                rightSlide.setPower(0.5);
-                rightSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                //right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                telemetry.addData("hardware: ", rightSlide.getCurrentPosition());
-                telemetry.update();
-            }
-            if(gamepad1.a){//up
-                index = 1;
+                //left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+                left.setPower(slide);
+                left.setTargetPosition(left.getCurrentPosition());
+
+                //right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                right.setPower(slide * -1);
+                left.setTargetPosition(right.getCurrentPosition());
+
+                /**
+                right.setTargetPosition(tick/15);
+                left.setTargetPosition(tick/-15);
+                //telemetry.addData("hardware: ", "right");
+                //telemetry.update();
+                //left.setTargetPositionTolerance()
+                */
+
+                if(slide==0) {
+                    left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                    right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                }
+                if(gamepad1.y){
+                    left.setPower(0);
+                    right.setPower(0);
+                    telemetry.addData("hardware: ", "slide");
+                    telemetry.update();
+                    rightSlide.setTargetPosition(500);
+                    ((DcMotorEx) rightSlide).setTargetPositionTolerance(1);
+                    rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    rightSlide.setPower(0.5);
+                    rightSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                    //right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                    telemetry.addData("hardware: ", rightSlide.getCurrentPosition());
+                    telemetry.update();
+                }
+              if(gamepad1.a){//up
                 telemetry.addData("hardware: ", "right");
                 telemetry.update();
-                leftSlide.setPower(0);
-                rightSlide.setPower(0);
-                left.setTargetPosition((int)(tick/-2));
-                //((DcMotorEx) left).setTargetPositionTolerance(1);
-                left.setPower(0.5);
+                 leftSlide.setPower(0);
+                 rightSlide.setPower(0);
+                 left.setTargetPosition((int)(tick/-12));
+                 ((DcMotorEx) left).setTargetPositionTolerance(1);
                 left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                right.setTargetPosition((int)(tick/2));
-                //((DcMotorEx) right).setTargetPositionTolerance(1);
-                right.setPower(0.5);
-                right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                index = 0;
-                // left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                // right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                 left.setPower(0.5);
+                right.setTargetPosition((int)(tick/12));
+                  ((DcMotorEx) right).setTargetPositionTolerance(1);
+                 right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                 right.setPower(0.5);
+                 left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                 right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             }
             if(gamepad1.b){   //down
-                index = 1;
                 //telemetry.addData("hardware: ", "left");
                 //telemetry.update();
                 leftSlide.setPower(0);
@@ -188,10 +185,9 @@ public class linearTest extends LinearOpMode {
                 right.setPower(0.2);
                 left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                index = 0;
             }
+
             if(gamepad1.x) {
-                index = 1;
                 //telemetry.addData("hardware: ", "up");
                 //telemetry.update();
                 leftSlide.setPower(0);
@@ -206,9 +202,8 @@ public class linearTest extends LinearOpMode {
                 right.setPower(0.2);
                 left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                index = 0;
             }
-            /*
+              /*
             if(gamepad1.dpad_up){
                 telemetry.addData("hardware: ", "vertical slide up");
                 telemetry.update();
@@ -249,10 +244,9 @@ public class linearTest extends LinearOpMode {
                 rightSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             }
             */
+            /*
             if(gamepad1.dpad_up){
-                while(gamepad1.dpad_up){
-                    encoderValue+=50;
-                }
+                encoderValue+=50;
                 left.setTargetPosition(encoderValue);
                 left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 left.setPower(0.2);
@@ -262,18 +256,30 @@ public class linearTest extends LinearOpMode {
                 left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             }
-            if(gamepad1.dpad_down) {
-                while(gamepad1.dpad_down){
-                    encoderValue-=50;
-                }
-            left.setTargetPosition(encoderValue);
-            left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            left.setPower(0.2);
-            right.setTargetPosition(-1*encoderValue);
-            right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            right.setPower(0.2);
-            left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+            if(gamepad1.dpad_down){
+                encoderValue-=50;
+                left.setTargetPosition(encoderValue);
+                left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                left.setPower(0.2);
+                right.setTargetPosition(-1*encoderValue);
+                right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                right.setPower(0.2);
+                left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+              }
+
+             */
+            if(gamepad1.dpad_up) {
+                left.setTargetPosition(encoderValue);
+                left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                left.setPower(0.2);
+                right.setTargetPosition(-1*encoderValue);
+                right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                right.setPower(0.2);
+                left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
             }
         }
     }
