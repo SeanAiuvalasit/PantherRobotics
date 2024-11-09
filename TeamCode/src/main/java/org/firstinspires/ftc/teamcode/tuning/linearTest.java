@@ -17,12 +17,18 @@ import org.firstinspires.ftc.robotcore.external.JavaUtil;
 
 @TeleOp(name = "linearTest")
 public class linearTest extends LinearOpMode {
-       //Hware hware = new Hware(hardwareMap);
+    //Hware hware = new Hware(hardwareMap);
     //DcMotor motor;
     //tick value - 537.7
     //5,281.1 - new tick value
-    int tick = 5281;
-    int encoderValue = tick/12;
+    final double TPR = 5281.1; // ticks per revolution
+    final double POSITION_TOLERANCE = 0.05; // prevents infinite loop
+    final int SLIDE_MAX = 3089;
+    double revolutions = 0.0; // used for calculation of rotation angle
+    double angle = 0.0; // degrees
+    double slideTarget = 0.0; // target position (0-1)
+    int leftTarget, rightTarget, leftSlideTarget, rightSlideTarget,
+        leftPos, rightPos, leftSlidePos, rightSlidePos; // all corrected for direction/scale
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -56,8 +62,102 @@ public class linearTest extends LinearOpMode {
 
         waitForStart();
 
-        while(opModeIsActive()){   //up
-            /**
+        while(opModeIsActive()){
+            // updates with current position
+            telemetry.addData("pos", slideTarget );
+            telemetry.update();
+
+            // revolutions used to compare target to pos - easier to convert
+            // angle used for user input - easier to visualize
+            // gear ratio of 3
+            angle = 90;
+            revolutions = angle / 360 / 3;
+
+            // calculate target for given angle
+            leftTarget = (int) (-1 * revolutions * TPR);
+            rightTarget = (int) (revolutions * TPR);
+            leftSlideTarget = (int) (-1 * slideTarget * SLIDE_MAX);
+            rightSlideTarget = (int) (slideTarget * SLIDE_MAX);
+
+            // record current positions
+            leftPos = (int) (-1 * left.getCurrentPosition() % TPR);
+            rightPos = (int) (right.getCurrentPosition() % TPR);
+            leftSlidePos = (int) (-1 * leftSlide.getCurrentPosition() / SLIDE_MAX);
+            rightSlidePos = (int) (rightSlide.getCurrentPosition() / SLIDE_MAX);
+
+            // set motor targets and powers
+            left.setTargetPosition(leftTarget);
+            right.setTargetPosition(rightTarget);
+            leftSlide.setTargetPosition(leftSlideTarget);
+            rightSlide.setTargetPosition(rightSlideTarget);
+
+            left.setPower(0.1);
+            right.setPower(0.1);
+            leftSlide.setPower(0.15);
+            rightSlide.setPower(0.15);
+
+            // if not in correct position, run rotation to that position
+            if (Math.abs(leftTarget-leftPos) > POSITION_TOLERANCE)
+            {
+                left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
+
+            // if not in correct position, run slide to that position
+            if (Math.abs(leftSlideTarget-leftPos) > POSITION_TOLERANCE)
+            {
+                leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
+
+            /*
+            // dpad up increases angle, dpad down decreases angle
+            // angle must be within 0 and 90 degrees
+            if (angle > 90)
+            {
+                angle = 90;
+            }
+            else if (angle < 0)
+            {
+                angle = 0;
+            }
+            else
+            {
+                if (gamepad1.dpad_up)
+                {
+                    angle++;
+                }
+                else if (gamepad1.dpad_down)
+                {
+                    angle--;
+                }
+            }
+             */
+
+            if (slideTarget > 1)
+            {
+                slideTarget = 1;
+            }
+            else if (slideTarget < 0)
+            {
+                slideTarget = 0;
+            }
+            else
+            {
+                if (gamepad1.y)
+                {
+                    slideTarget += 0.005;
+                }
+                else if (gamepad1.a)
+                {
+                    slideTarget -= 0.005 ;
+                }
+            }
+        }
+    }
+}
+
+            /*
              //Mecanum drive code
              *double drive, turn, strafe;
              *
@@ -93,194 +193,4 @@ public class linearTest extends LinearOpMode {
              *
              *      double [] motorPowers = new double[]{fLeftPower, fRightPower, bLeftPower, bRightPower};
              *      return motorPowers;
-             */
-
-            double slide;
-            telemetry.addData("hardware: ", rightSlide.getCurrentPosition());
-            telemetry.update();
-            /**
-             * Rotates the left and right motor by the amount given by right_stick_y
-             * multiplied by 0.5
-             * commet
-             */
-            left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            slide = gamepad1.right_stick_y * 0.5;
-               /**        this is for teh slide to hold its position
-            if(slide==0){
-                left.setPower(0.0000000000000000000000001);
-                right.setPower(0.0000000000000000000000001);
-                left.setTargetPosition(left.getCurrentPosition());
-                right.setTargetPosition(right.getCurrentPosition());
-                //left.setTargetPosition();
-                left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            }
             */
-                //left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-                left.setPower(slide);
-                left.setTargetPosition(left.getCurrentPosition());
-
-                //right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                right.setPower(slide * -1);
-                left.setTargetPosition(right.getCurrentPosition());
-
-                /**
-                right.setTargetPosition(tick/15);
-                left.setTargetPosition(tick/-15);
-                //telemetry.addData("hardware: ", "right");
-                //telemetry.update();
-                //left.setTargetPositionTolerance()
-                */
-
-                if(slide==0) {
-                    left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                    right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                }
-                if(gamepad1.y){
-                    left.setPower(0);
-                    right.setPower(0);
-                    telemetry.addData("hardware: ", "slide");
-                    telemetry.update();
-                    rightSlide.setTargetPosition(500);
-                    ((DcMotorEx) rightSlide).setTargetPositionTolerance(1);
-                    rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    rightSlide.setPower(0.5);
-                    rightSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                    //right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                    telemetry.addData("hardware: ", rightSlide.getCurrentPosition());
-                    telemetry.update();
-                }
-              if(gamepad1.a){//up
-                telemetry.addData("hardware: ", "right");
-                telemetry.update();
-                 leftSlide.setPower(0);
-                 rightSlide.setPower(0);
-                 left.setTargetPosition((int)(tick/-12));
-                 ((DcMotorEx) left).setTargetPositionTolerance(1);
-                left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                 left.setPower(0.5);
-                right.setTargetPosition((int)(tick/12));
-                  ((DcMotorEx) right).setTargetPositionTolerance(1);
-                 right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                 right.setPower(0.5);
-                 left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                 right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            }
-            if(gamepad1.b){   //down
-                //telemetry.addData("hardware: ", "left");
-                //telemetry.update();
-                leftSlide.setPower(0);
-                rightSlide.setPower(0);
-                left.setTargetPosition(0);
-                ((DcMotorEx) left).setTargetPositionTolerance(1);
-                left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                left.setPower(0.2);
-                right.setTargetPosition(0);
-                ((DcMotorEx) right).setTargetPositionTolerance(1);
-                right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                right.setPower(0.2);
-                left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            }
-
-            if(gamepad1.x) {
-                //telemetry.addData("hardware: ", "up");
-                //telemetry.update();
-                leftSlide.setPower(0);
-                rightSlide.setPower(0);
-                left.setTargetPosition((int)(tick/-9));
-                ((DcMotorEx) left).setTargetPositionTolerance(1);
-                left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                left.setPower(0.2);
-                right.setTargetPosition((int)(tick/9));
-                ((DcMotorEx) right).setTargetPositionTolerance(1);
-                right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                right.setPower(0.2);
-                left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            }
-              /*
-            if(gamepad1.dpad_up){
-                telemetry.addData("hardware: ", "vertical slide up");
-                telemetry.update();
-                left.setPower(0.2);
-                right.setPower(0.2);
-                left.setTargetPosition((int)(tick/-10.75));
-                //left.setTargetPositionTolerance()
-                left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                left.setPower(0.2);
-                right.setTargetPosition((int)(tick/10.75));
-                right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                right.setPower(0.2);
-                leftSlide.setTargetPosition(-2640);
-                //left.setTargetPositionTolerance()
-                leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                leftSlide.setPower(0.01);
-                rightSlide.setTargetPosition(2640);
-                rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                rightSlide.setPower(0.01);
-                leftSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                rightSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            }
-              
-            if(gamepad1.dpad_down){
-                telemetry.addData("hardware: ", "vertical slide down");
-                telemetry.update();
-                left.setPower(0);
-                right.setPower(0);
-
-                leftSlide.setTargetPosition(0);
-                //left.setTargetPositionTolerance()
-                leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                leftSlide.setPower(0.3);
-                rightSlide.setTargetPosition(0);
-                rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                rightSlide.setPower(0.3);
-                leftSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                rightSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            }
-            */
-            /*
-            if(gamepad1.dpad_up){
-                encoderValue+=50;
-                left.setTargetPosition(encoderValue);
-                left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                left.setPower(0.2);
-                right.setTargetPosition(-1*encoderValue);
-                right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                right.setPower(0.2);
-                left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            }
-
-            if(gamepad1.dpad_down){
-                encoderValue-=50;
-                left.setTargetPosition(encoderValue);
-                left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                left.setPower(0.2);
-                right.setTargetPosition(-1*encoderValue);
-                right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                right.setPower(0.2);
-                left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-              }
-
-             */
-            if(gamepad1.dpad_up) {
-                left.setTargetPosition(encoderValue);
-                left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                left.setPower(0.2);
-                right.setTargetPosition(-1*encoderValue);
-                right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                right.setPower(0.2);
-                left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-            }
-        }
-    }
-}
