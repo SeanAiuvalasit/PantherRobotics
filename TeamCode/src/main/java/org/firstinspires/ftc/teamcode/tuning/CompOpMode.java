@@ -33,7 +33,7 @@ public class CompOpMode extends LinearOpMode {
         leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         waitForStart();
-
+//hytjuytyj
         while (opModeIsActive()) {
             drive = gamepad1.left_stick_y * -1;
             turn = gamepad1.right_stick_x;
