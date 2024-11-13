@@ -26,7 +26,7 @@ public class CompOpMode extends LinearOpMode {
         final double SLIDE_TARGET = 0.5;            // slide position to go to on button press
         final int SLIDE_MAX = 3089;                 // empirical position of fully extended arm
         // TODO: update max angle
-        final int MAX_ANGLE = 90;                   // degrees
+        final int MAX_ANGLE = 110;                   // degrees
 
         double revolutions = 0.0;                   // used for calculation of rotation angle
         double angle = 0.0;                         // degrees
@@ -163,7 +163,8 @@ public class CompOpMode extends LinearOpMode {
                 rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
 
-            // left stick changes target angle (0-MAX_ANGLE)
+            // left stick changes target angle (0-M
+            // AX_ANGLE)
             if (slideTarget > 1)
                 slideTarget = 1;
             else if (slideTarget < 0)
