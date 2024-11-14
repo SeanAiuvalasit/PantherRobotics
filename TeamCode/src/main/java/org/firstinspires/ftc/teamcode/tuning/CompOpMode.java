@@ -105,7 +105,7 @@ public class CompOpMode extends LinearOpMode {
             // revolutions used to compare target to pos - easier to convert
             // angle used for user input - easier to visualize
             // gear ratio of 3
-            revolutions = (angle / 360) / 3;
+            revolutions = (angle / 360);
 
             // calculate target for given angle
             leftTarget = (int) (-1 * revolutions * TPR);
