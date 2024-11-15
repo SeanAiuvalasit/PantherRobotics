@@ -5,9 +5,11 @@ package org.firstinspires.ftc.teamcode.tuning;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "MecanumTest")
 public class CompOpMode extends LinearOpMode {
@@ -23,10 +25,11 @@ public class CompOpMode extends LinearOpMode {
         final double TPR = 5281.1;                  // ticks per revolution
         final double POSITION_TOLERANCE = 0.05;     // prevents infinite loop
         // TODO: update target position
-        final double SLIDE_TARGET = 0.5;            // slide position to go to on button press
+        final double SLIDE_TARGET_NINETY_DEGREES = 0.5;            // slide position to go to on button press gamepad1.b
+        final double SLIDE_TARGET_SEVENTY_DEGREES = 0.4;            // slide position to go to on button press gamepad1.a
         final int SLIDE_MAX = 3089;                 // empirical position of fully extended arm
         // TODO: update max angle
-        final int MAX_ANGLE = 110;                   // degrees
+        final int MAX_ANGLE = 180;                   // degrees
 
         double revolutions = 0.0;                   // used for calculation of rotation angle
         double angle = 0.0;                         // degrees
@@ -40,6 +43,9 @@ public class CompOpMode extends LinearOpMode {
 
         boolean lastCycle = false;                  // used with below to read button presses properly
         boolean thisCycle = false;
+
+        boolean lastCycle2 = false;                 //used with button reads below
+        boolean thisCycle2 = false;
 
         DcMotor leftSlide = hardwareMap.get(DcMotorEx.class, "leftSlide");
         DcMotor rightSlide = hardwareMap.get(DcMotorEx.class, "rightSlide");
@@ -88,9 +94,32 @@ public class CompOpMode extends LinearOpMode {
         leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        //Servos
+        Servo servo1 = hardwareMap.get(Servo.class, "servo1");
+        CRServo servo2 = hardwareMap.get(CRServo.class,"servo2");
+
+
         waitForStart();
 
         while (opModeIsActive()) {
+
+            if(gamepad2.a){
+                servo1.setPosition(0.5);
+            }if(gamepad2.b){
+                servo1.setPosition(0.7);
+            }
+            while(gamepad2.right_bumper){
+                servo2.setPower(-1);
+            }
+            while(gamepad2.left_bumper){
+                servo2.setPower(1);
+            }
+            servo2.setPower(0);
+            //servo2.setPower(-1);
+            telemetry.addData("rotation target", servo1.getPosition() + " degrees");
+            telemetry.update();
+
+
             // updates with current position
             telemetry.addData("rotation target", angle + " degrees");
             telemetry.addData("rotation position", rightPos + " degrees");
@@ -118,8 +147,8 @@ public class CompOpMode extends LinearOpMode {
             // set motor targets and powers
             left.setTargetPosition(leftTarget);
             right.setTargetPosition(rightTarget);
-            left.setPower(-0.25);
-            right.setPower(0.25);
+            left.setPower(-1);
+            right.setPower(1);
 
             // if not in correct position, run rotation to that position
             if (Math.abs(leftTarget-leftPos) > POSITION_TOLERANCE)
@@ -140,8 +169,22 @@ public class CompOpMode extends LinearOpMode {
             lastCycle = thisCycle;
             thisCycle = gamepad1.b;
             if (!lastCycle && thisCycle)
-                slideTarget = SLIDE_TARGET;
+                slideTarget = SLIDE_TARGET_NINETY_DEGREES;
 
+            /**
+            // press a to go to position 0.5, extend slide, and
+            lastCycle2 = thisCycle2;
+            thisCycle2 = gamepad1.a;
+            if (!lastCycle2 && thisCycle2)
+            {
+                angle = 90;         //set rotating arm 90
+             //   wait(1);    //wait while it does that
+
+             //   slideTarget = SLIDE_TARGET_SEVENTY_DEGREES;     //slide
+                servo1.setPosition(1);       //set servo to eating position
+                servo2.setPower(-1);
+            }
+            */
             // calculate target for given angle
             leftSlideTarget = (int) (-1 * slideTarget * SLIDE_MAX);
             rightSlideTarget = (int) (slideTarget * SLIDE_MAX);
@@ -163,8 +206,7 @@ public class CompOpMode extends LinearOpMode {
                 rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
 
-            // left stick changes target angle (0-M
-            // AX_ANGLE)
+            // left stick changes target angle (0-MAX_ANGLE)
             if (slideTarget > 1)
                 slideTarget = 1;
             else if (slideTarget < 0)
