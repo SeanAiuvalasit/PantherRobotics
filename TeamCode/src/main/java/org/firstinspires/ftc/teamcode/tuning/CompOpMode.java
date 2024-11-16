@@ -121,13 +121,33 @@ public class CompOpMode extends LinearOpMode {
             }
 
             if(gamepad1.dpad_down){
+
+                left.setPower(-0.0000000000000000001);
+                right.setPower(0.0000000000000000001);
+                leftSlide.setPower(-0.0000000000000000001);
+                rightSlide.setPower(0.0000000000000000001);
+
+                angle = -19.78510985; // Update angle
+                servo1.setPosition(0.765);
+
+                slide = true; // Set control variable to true
+
+            }
+
+// Separate logic to update slideTarget after angle is updated
+            if (slide) {
+                slideTarget = 0.26989865; // Update slideTarget
+                slide = false; // Reset control variable
+            }
+
+            if(gamepad1.dpad_left){
                 left.setPower(-0.0000000000000000001);
                 right.setPower(0.0000000000000000001);
                 leftSlide.setPower(-0.0000000000000000001);
                 rightSlide.setPower(0.0000000000000000001);
 
 
-                angle = -19.78510985; // Update angle
+                angle = -42.78510985; // Update angle
                 servo1.setPosition(0.765);
 
                 slide = true; // Set control variable to true
@@ -135,7 +155,7 @@ public class CompOpMode extends LinearOpMode {
 
 // Separate logic to update slideTarget after angle is updated
             if (slide) {
-                slideTarget = 0.26989865; // Update slideTarget
+                slideTarget = 0.523; // Update slideTarget
                 slide = false; // Reset control variable
             }
 
@@ -164,7 +184,7 @@ public class CompOpMode extends LinearOpMode {
                 servo1.setPosition(1);
             }
 
-            if(gamepad2.y){
+            if(gamepad2.dpad_up){
                 if(servo1.getPosition() > 1)
                 {
                     servo1.setPosition(1);
@@ -173,7 +193,7 @@ public class CompOpMode extends LinearOpMode {
                     }
                 }
 
-            if(gamepad2.a){
+            if(gamepad2.dpad_down){
                 if(servo1.getPosition() < 0.5){
                     servo1.setPosition(0.5);
                 }else{
@@ -205,6 +225,7 @@ public class CompOpMode extends LinearOpMode {
          //   telemetry.addData("left joystick", gamepad1.left_stick_y);
          //   telemetry.addData("right joystick", gamepad1.right_stick_y);
             telemetry.addData("servo", servo2.getPower());
+            telemetry.addData("precise movement", preciseMovement);
             telemetry.update();
 
             // revolutions used to compare target to pos - easier to convert
@@ -289,8 +310,8 @@ public class CompOpMode extends LinearOpMode {
 
             //MecanumDrive Code
             drive = gamepad2.left_stick_y * 0.75 * preciseMovement;
-            turn = gamepad2.right_stick_x * -0.75 * preciseMovement;
-            strafe = gamepad2.left_stick_x * 0.75 * preciseMovement;
+            turn = gamepad2.right_stick_x *-1* preciseMovement;
+            strafe = gamepad2.left_stick_x * preciseMovement;
 
             //strafe
             fLeftPower = drive + turn + strafe;
