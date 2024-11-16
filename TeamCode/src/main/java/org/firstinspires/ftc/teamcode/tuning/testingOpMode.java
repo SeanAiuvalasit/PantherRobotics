@@ -9,11 +9,10 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "MecanumTest")
-public class CompOpMode extends LinearOpMode {
+@TeleOp(name = "testingTest")
+public class testingOpMode extends LinearOpMode {
 
 
 
@@ -30,12 +29,11 @@ public class CompOpMode extends LinearOpMode {
         final double SLIDE_TARGET_SEVENTY_DEGREES = 0.4;            // slide position to go to on button press gamepad1.a
         final int SLIDE_MAX = 3089;                 // empirical position of fully extended arm
         // TODO: update max angle
-        final int MAX_ANGLE = -118;                   // degrees
+        final int MAX_ANGLE = 180;                   // degrees
 
         double revolutions = 0.0;                   // used for calculation of rotation angle
         double angle = 0.0;                         // degrees
         double slideTarget = 0.0;                   // target position (0-1)
-        double preciseMovement = 1.0;
         // all of the below are in revolutions, corrected for direction
         int leftTarget, rightTarget, leftSlideTarget, rightSlideTarget;
         int leftPos = 0;
@@ -48,14 +46,6 @@ public class CompOpMode extends LinearOpMode {
 
         boolean lastCycle2 = false;                 //used with button reads below
         boolean thisCycle2 = false;
-
-        boolean slide = false;
-        boolean slide2 = false;
-
-        boolean rightBumper = false;
-        boolean leftBumper = false;
-
-        boolean precise = false;
 
         DcMotor leftSlide = hardwareMap.get(DcMotorEx.class, "leftSlide");
         DcMotor rightSlide = hardwareMap.get(DcMotorEx.class, "rightSlide");
@@ -83,7 +73,7 @@ public class CompOpMode extends LinearOpMode {
         right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        
+
         //MecanumDrive Code
         double drive, turn, strafe;
         double fLeftPower, fRightPower, bLeftPower, bRightPower;
@@ -109,86 +99,28 @@ public class CompOpMode extends LinearOpMode {
         CRServo servo2 = hardwareMap.get(CRServo.class,"servo2");
 
 
-
         waitForStart();
 
         while (opModeIsActive()) {
 
-            if(gamepad2.left_trigger > 0.5){
-                preciseMovement = 0.2;
-            }else{
-                preciseMovement = 1.0;
+            if(gamepad1.x){
+                servo1.setPosition(0.55);
             }
-
-            if(gamepad1.dpad_down){
-                left.setPower(-0.0000000000000000001);
-                right.setPower(0.0000000000000000001);
-                leftSlide.setPower(-0.0000000000000000001);
-                rightSlide.setPower(0.0000000000000000001);
-
-
-                angle = -19.78510985; // Update angle
-                servo1.setPosition(0.765);
-
-                slide = true; // Set control variable to true
-            }
-
-// Separate logic to update slideTarget after angle is updated
-            if (slide) {
-                slideTarget = 0.26989865; // Update slideTarget
-                slide = false; // Reset control variable
-            }
-
-            if(gamepad1.dpad_up){
-                left.setPower(-0.000000000000000000000001);
-                right.setPower(0.000000000000000000000001);
-                leftSlide.setPower(-0.000000000000000000000001);
-                rightSlide.setPower(0.000000000000000000000001);
-
-                angle = -115; // update angle
-                servo1.setPosition(0.50);
-
-                slide2 = true;
-            }
-
-            if(slide2){
-                slideTarget = 0.9;
-                slide2 = false;
-            }
-
             if(gamepad1.a){
                 servo1.setPosition(0.5);
             }if(gamepad1.b){
-                servo1.setPosition(0.7);
+                servo1.setPosition(0.75);
             }if(gamepad1.y){
                 servo1.setPosition(1);
             }
 
-            if(gamepad2.y){
-                if(servo1.getPosition() > 1)
-                {
-                    servo1.setPosition(1);
-                }else{
-                    servo1.setPosition(servo1.getPosition() + 0.001);
-                    }
-                }
-
-            if(gamepad2.a){
-                if(servo1.getPosition() < 0.5){
-                    servo1.setPosition(0.5);
-                }else{
-                    servo1.setPosition(servo1.getPosition() - 0.001);
-                }
+            while(gamepad1.right_bumper){
+                servo2.setPower(-1);
             }
-
-            if(gamepad2.right_bumper){
-               // rightBumper = true;
-                servo2.setPower(-0.333);
-            }else if (gamepad2.left_bumper){
-                servo2.setPower(0.333);
-            }else
-                servo2.setPower(0);
-
+            while(gamepad1.left_bumper){
+                servo2.setPower(1);
+            }
+            servo2.setPower(0);
             //servo2.setPower(-1);
             telemetry.addData("rotation target", servo1.getPosition() + " degrees");
             telemetry.update();
@@ -197,14 +129,14 @@ public class CompOpMode extends LinearOpMode {
             // updates with current position
             telemetry.addData("rotation target", angle + " degrees");
             telemetry.addData("rotation position", rightPos + " degrees");
-        //    telemetry.addData("rotation power", right.getPower());
-            telemetry.addData("slide target", slideTarget + " rotations");
-            telemetry.addData("slide position", rightSlidePos / 360 + " rotations");
-         //   telemetry.addData("right slide power", rightSlide.getPower());
-         //   telemetry.addData("left slide power", leftSlide.getPower());
-         //   telemetry.addData("left joystick", gamepad1.left_stick_y);
-         //   telemetry.addData("right joystick", gamepad1.right_stick_y);
-            telemetry.addData("servo", servo2.getPower());
+            telemetry.addData("rotation power", right.getPower());
+            //   telemetry.addData("slide target", slideTarget + " rotations");
+            //   telemetry.addData("slide position", rightSlidePos / 360 + " rotations");
+            telemetry.addData("right slide power", rightSlide.getPower());
+            telemetry.addData("left slide power", leftSlide.getPower());
+            telemetry.addData("left joystick", gamepad1.left_stick_y);
+            telemetry.addData("right joystick", gamepad1.right_stick_y);
+
             telemetry.update();
 
             // revolutions used to compare target to pos - easier to convert
@@ -234,30 +166,31 @@ public class CompOpMode extends LinearOpMode {
             }
 
             // left stick changes target angle (0-MAX_ANGLE)
-            if (angle < MAX_ANGLE){
-                angle = MAX_ANGLE;
-            } else if (gamepad1.right_stick_y > 0.5 || gamepad1.right_stick_y < -0.5)
-                angle += 0.55
-                        * gamepad1.right_stick_y;
+            /**      if (angle > MAX_ANGLE)
+             angle = MAX_ANGLE;
+             else if (angle < 0)
+             angle = 0;
+             else if (gamepad1.left_stick_y > 0.5 || gamepad1.left_stick_y < -0.5)
+             angle -= 0.75 * gamepad1.left_stick_y;
+             */
+            if (gamepad1.left_stick_y > 0.5 || gamepad1.left_stick_y < -0.5)
+                angle += 0.4 * gamepad1.left_stick_y;
 
-       //     if (gamepad1.right_stick_y > 0.5 || gamepad1.right_stick_y < -0.5)
-       //         angle += 0.4 * gamepad1.right_stick_y;
-
-           /** if (Math.abs(gamepad1.right_stick_y) > 0.5) {
-                double slidePower = 0.25 * gamepad1.right_stick_y; // Adjusted the scaling factor
-                leftSlide.setPower(slidePower);
-                rightSlide.setPower(slidePower); // Same direction for both slides
-            } else {
-                leftSlide.setPower(0);
-                rightSlide.setPower(0); // Stop motors if input is out of range
-            }*/
+            /** if (Math.abs(gamepad1.right_stick_y) > 0.5) {
+             double slidePower = 0.25 * gamepad1.right_stick_y; // Adjusted the scaling factor
+             leftSlide.setPower(slidePower);
+             rightSlide.setPower(slidePower); // Same direction for both slides
+             } else {
+             leftSlide.setPower(0);
+             rightSlide.setPower(0); // Stop motors if input is out of range
+             }*/
 
             // press b to go to position 0.5
             /**lastCycle = thisCycle;
-            thisCycle = gamepad1.b;
-            if (!lastCycle && thisCycle)
-                slideTarget = SLIDE_TARGET_NINETY_DEGREES;
-            */
+             thisCycle = gamepad1.b;
+             if (!lastCycle && thisCycle)
+             slideTarget = SLIDE_TARGET_NINETY_DEGREES;
+             */
             // calculate target for given angle
             leftSlideTarget = (int) (-1 * slideTarget * SLIDE_MAX);
             rightSlideTarget = (int) (slideTarget * SLIDE_MAX);
@@ -284,13 +217,13 @@ public class CompOpMode extends LinearOpMode {
                 slideTarget = 1;
             else if (slideTarget < 0)
                 slideTarget = 0;
-            else if (gamepad1.left_stick_y > 0.5 || gamepad1.left_stick_y < -0.5)
-                slideTarget -= (0.01 *  gamepad1.left_stick_y);
+            else if (gamepad1.right_stick_y > 0.5 || gamepad1.right_stick_y < -0.5)
+                slideTarget -= (0.01 *  gamepad1.right_stick_y);
 
             //MecanumDrive Code
-            drive = gamepad2.left_stick_y * 0.75 * preciseMovement;
-            turn = gamepad2.right_stick_x * -0.75 * preciseMovement;
-            strafe = gamepad2.left_stick_x * 0.75 * preciseMovement;
+            drive = gamepad2.left_stick_y * 0.75;
+            turn = gamepad2.right_stick_x * -0.75;
+            strafe = gamepad2.left_stick_x * 0.75;
 
             //strafe
             fLeftPower = drive + turn + strafe;
@@ -321,4 +254,5 @@ public class CompOpMode extends LinearOpMode {
         return motorPowers;
 
     }
+
 }
