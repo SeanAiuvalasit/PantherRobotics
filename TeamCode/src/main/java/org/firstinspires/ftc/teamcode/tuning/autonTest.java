@@ -105,7 +105,10 @@ public class autonTest extends LinearOpMode {
 
             // time to run
             sleep(5000);
-1
+
+
+
+
             // wait at end
             sleep(5000);
         }
