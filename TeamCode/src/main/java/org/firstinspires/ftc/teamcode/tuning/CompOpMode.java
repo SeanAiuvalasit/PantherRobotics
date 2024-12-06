@@ -212,11 +212,11 @@ public class CompOpMode extends LinearOpMode {
             //servo2.setPower(-1);
             telemetry.addData("rotation target", servo1.getPosition() + " degrees");
             telemetry.update();
-
+*/
 
             // updates with current position
-            telemetry.addData("rotation target", angle + " degrees");
-            telemetry.addData("rotation position", rightPos + " degrees");
+        //    telemetry.addData("rotation target", angle + " degrees");
+          //  telemetry.addData("rotation position", rightPos + " degrees");
         //    telemetry.addData("rotation power", right.getPower());
             telemetry.addData("slide target", slideTarget + " rotations");
             telemetry.addData("slide position", rightSlidePos / 360 + " rotations");
@@ -224,10 +224,10 @@ public class CompOpMode extends LinearOpMode {
          //   telemetry.addData("left slide power", leftSlide.getPower());
          //   telemetry.addData("left joystick", gamepad1.left_stick_y);
          //   telemetry.addData("right joystick", gamepad1.right_stick_y);
-            telemetry.addData("servo", servo2.getPower());
-            telemetry.addData("precise movement", preciseMovement);
+        //    telemetry.addData("servo", servo2.getPower());
+         //   telemetry.addData("precise movement", preciseMovement);
             telemetry.update();
-*/
+
             // revolutions used to compare target to pos - easier to convert
             // angle used for user input - easier to visualize
             // gear ratio of 3

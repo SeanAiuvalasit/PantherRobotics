@@ -51,6 +51,8 @@ public class testingForMotors extends LinearOpMode {
         //  intake.setPower(0);
         waitForStart();
         while (opModeIsActive()) {
+            telemetry.addData("height", rightSlide.getCurrentPosition() + "woo");
+            telemetry.update();
             lastCycle = thisCycle;
             thisCycle = gamepad1.b;
             if (lastCycle && thisCycle) {
@@ -62,10 +64,10 @@ public class testingForMotors extends LinearOpMode {
                 final double SERVO_DUMP = 0;
                 // TODO: value for intake dump
                 final double INTAKE_DUMP = 0;
-                final int ARM_UP = 1320;                    // position of arm up (ticks)
+                final int ARM_UP = 1300;                    // position of arm up (ticks)
                 final int ARM_DOWN = 0;                     // position of arm down (ticks)
-                final int SLIDE_MAX = 2400/**3089*/;                 // empirical position of fully extended arm
-                final int SLIDE_MIN = 0;
+                final int SLIDE_MAX = 2855/**3089*/;                 // empirical position of fully extended arm
+                final int SLIDE_MIN = 15;
 
                 double slideTarget = 0.0;                   // target position (0-1)
 
@@ -74,7 +76,7 @@ public class testingForMotors extends LinearOpMode {
                 int leftPos = 0;
                 int leftSlidePos = 0;
                 double slideHold = 0.05;
-                double speed = 1.0;
+                double speed = 1;
 
                 //rotates 90 deg
                 right.setTargetPosition(ARM_UP);
@@ -92,7 +94,7 @@ public class testingForMotors extends LinearOpMode {
                     rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 }
                 rightSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                rightSlide.setPower(slideHold);
+                rightSlide.setPower(0.1);
 
                 //rotate servos
                 /**rotation.setPosition(SERVO_DUMP);
@@ -112,13 +114,17 @@ public class testingForMotors extends LinearOpMode {
                 while (SLIDE_MIN != rightSlide.getCurrentPosition()) {
                     rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 }
+                rightSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightSlide.setPower(-0.1);
 
                 //rotate 0 deg
                 right.setTargetPosition(ARM_DOWN);
-                right.setPower(speed);
+                right.setPower(0.7*speed);
                 while (ARM_DOWN != right.getCurrentPosition()) {
                     right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 }
+
+                rightSlide.setPower(0);
             }
         }
     }
