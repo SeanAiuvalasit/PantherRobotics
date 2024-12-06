@@ -11,15 +11,14 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
-@TeleOp(name = "MecanumTest2")
+@TeleOp(name = "sampleDumpSequence2.0")
 
-public class SampleDumpSequence extends LinearOpMode {
+public class testingForMotors extends LinearOpMode {
 
     @Override
-    public void runOpMode() throws InterruptedException
-    {
-      //  CRServo intake = hardwareMap.get(CRServo.class, "intake");
-      //  Servo rotation = hardwareMap.get(Servo.class, "rotation");
+    public void runOpMode() throws InterruptedException {
+        //  CRServo intake = hardwareMap.get(CRServo.class, "intake");
+        //  Servo rotation = hardwareMap.get(Servo.class, "rotation");
 
         DcMotor leftSlide = hardwareMap.get(DcMotorEx.class, "leftSlide");
         DcMotor rightSlide = hardwareMap.get(DcMotorEx.class, "rightSlide");
@@ -49,25 +48,12 @@ public class SampleDumpSequence extends LinearOpMode {
         boolean lastCycle = false;                  // used with below to read button presses properly
         boolean thisCycle = false;
 
-      //  intake.setPower(0);
-
-        while(opModeIsActive())
-        {
-            // on button press turn servo to home
-            // set rotation target
-            // go there
-            // extend linear slide
-            // turn servo to face basket
-            // release sample
-            // turn servo back to home
-            // retract linear slide
-            // set rotation to home
-            // rotate home
-
+        //  intake.setPower(0);
+        waitForStart();
+        while (opModeIsActive()) {
             lastCycle = thisCycle;
             thisCycle = gamepad1.b;
-            if (!lastCycle && thisCycle)
-            {
+            if (lastCycle && thisCycle) {
                 // declare variables
                 final double CPR = 5281.1;                  // ticks per revolution
                 final int POSITION_TOLERANCE = 25;          // (ticks) prevents infinite loop
@@ -78,7 +64,7 @@ public class SampleDumpSequence extends LinearOpMode {
                 final double INTAKE_DUMP = 0;
                 final int ARM_UP = 1320;                    // position of arm up (ticks)
                 final int ARM_DOWN = 0;                     // position of arm down (ticks)
-                final int SLIDE_MAX = 3089;                 // empirical position of fully extended arm
+                final int SLIDE_MAX = 2400/**3089*/;                 // empirical position of fully extended arm
                 final int SLIDE_MIN = 0;
 
                 double slideTarget = 0.0;                   // target position (0-1)
@@ -87,78 +73,50 @@ public class SampleDumpSequence extends LinearOpMode {
                 int leftTarget, rightTarget, leftSlideTarget, rightSlideTarget;
                 int leftPos = 0;
                 int leftSlidePos = 0;
-                double slideHold = 1.0;
+                double slideHold = 0.05;
+                double speed = 1.0;
 
-                // turn servo home
-        //        rotation.setPosition(SERVO_UP);
-
-                // set rotation target
-                left.setTargetPosition(-1 * ARM_UP);
+                //rotates 90 deg
                 right.setTargetPosition(ARM_UP);
-                left.setPower(-0.25);
-                right.setPower(0.25);
-
-                // go to rotation position
-                while (Math.abs(ARM_UP-left.getCurrentPosition()) > POSITION_TOLERANCE)
-                {
-                    left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                right.setPower(speed);
+                while (ARM_UP != right.getCurrentPosition()) {
                     right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 }
-                left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                left.setPower(-0.1);
-                right.setPower(0.1);
+                right.setPower(0.05);
 
-                // set slide target
-                leftSlide.setTargetPosition(-1 * SLIDE_MAX);
+                //slides to top
                 rightSlide.setTargetPosition(SLIDE_MAX);
-                leftSlide.setPower(-0.25);
-                rightSlide.setPower(0.25);
-
-                // go there
-                while (Math.abs(SLIDE_MAX-leftSlide.getCurrentPosition()) > POSITION_TOLERANCE)
-                {
-                    leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rightSlide.setPower(speed);
+                while (SLIDE_MAX != rightSlide.getCurrentPosition()) {
                     rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 }
-                leftSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 rightSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                leftSlide.setPower(-1 * slideHold);
                 rightSlide.setPower(slideHold);
 
+                //rotate servos
+                /**rotation.setPosition(SERVO_DUMP);
 
-                // turn servo
-          //      rotation.setPosition(SERVO_DUMP);
+                 // TODO: release sample
+                 intake.setPower(1);
+                 sleep(2500);
+                 intake.setPower(0);
 
-                // TODO: release sample
-            //    intake.setPower(1);
+                 // turn servo home
+                 rotation.setPosition(SERVO_UP);
+                 */
                 sleep(2500);
-              //  intake.setPower(0);
-                // turn servo home
-              //  rotation.setPosition(SERVO_UP);
-
-
-                // set slide pos
-                leftSlide.setTargetPosition(-1 * SLIDE_MIN);
+                //slides to bottom
                 rightSlide.setTargetPosition(SLIDE_MIN);
-                leftSlide.setPower(-0.25);
-                rightSlide.setPower(0.25);
-                // go there
-                while (Math.abs(SLIDE_MIN-leftSlide.getCurrentPosition()) > POSITION_TOLERANCE)
-                {
-                    leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rightSlide.setPower(speed);
+                while (SLIDE_MIN != rightSlide.getCurrentPosition()) {
                     rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 }
 
-                // rotate home
-                left.setTargetPosition(-1 * ARM_UP);
-                right.setTargetPosition(ARM_UP);
-                left.setPower(-0.25);
-                right.setPower(0.25);
-                // go there
-                while (Math.abs(SLIDE_MAX-left.getCurrentPosition()) > POSITION_TOLERANCE)
-                {
-                    left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                //rotate 0 deg
+                right.setTargetPosition(ARM_DOWN);
+                right.setPower(speed);
+                while (ARM_DOWN != right.getCurrentPosition()) {
                     right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 }
             }

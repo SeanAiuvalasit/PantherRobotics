@@ -57,10 +57,10 @@ public class CompOpMode extends LinearOpMode {
 
         boolean precise = false;
 
-        DcMotor leftSlide = hardwareMap.get(DcMotorEx.class, "leftSlide");
-        DcMotor rightSlide = hardwareMap.get(DcMotorEx.class, "rightSlide");
-        DcMotor left = hardwareMap.get(DcMotorEx.class, "left");
-        DcMotor right = hardwareMap.get(DcMotorEx.class, "right");
+        DcMotorEx leftSlide = hardwareMap.get(DcMotorEx.class, "leftSlide");
+        DcMotorEx rightSlide = hardwareMap.get(DcMotorEx.class, "rightSlide");
+        DcMotorEx left = hardwareMap.get(DcMotorEx.class, "left");
+        DcMotorEx right = hardwareMap.get(DcMotorEx.class, "right");
 
         telemetry.addData("hardware: ", "Initialize");
         leftSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -105,8 +105,8 @@ public class CompOpMode extends LinearOpMode {
         leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //Servos
-        Servo servo1 = hardwareMap.get(Servo.class, "servo1");
-        CRServo servo2 = hardwareMap.get(CRServo.class,"servo2");
+    //    Servo servo1 = hardwareMap.get(Servo.class, "servo1");
+    //    CRServo servo2 = hardwareMap.get(CRServo.class,"servo2");
 
 
 
@@ -128,7 +128,7 @@ public class CompOpMode extends LinearOpMode {
                 rightSlide.setPower(0.0000000000000000001);
 
                 angle = -19.78510985; // Update angle
-                servo1.setPosition(0.765);
+      //          servo1.setPosition(0.765);
 
                 slide = true; // Set control variable to true
 
@@ -148,7 +148,7 @@ public class CompOpMode extends LinearOpMode {
 
 
                 angle = -42.78510985; // Update angle
-                servo1.setPosition(0.765);
+     //           servo1.setPosition(0.765);
 
                 slide = true; // Set control variable to true
             }
@@ -166,7 +166,7 @@ public class CompOpMode extends LinearOpMode {
                 rightSlide.setPower(0.000000000000000000000001);
 
                 angle = -115; // update angle
-                servo1.setPosition(0.50);
+         //       servo1.setPosition(0.50);
 
                 slide2 = true;
             }
@@ -176,7 +176,7 @@ public class CompOpMode extends LinearOpMode {
                 slide2 = false;
             }
 
-            if(gamepad1.a){
+      /**      if(gamepad1.a){
                 servo1.setPosition(0.5);
             }if(gamepad1.b){
                 servo1.setPosition(0.7);
@@ -227,7 +227,7 @@ public class CompOpMode extends LinearOpMode {
             telemetry.addData("servo", servo2.getPower());
             telemetry.addData("precise movement", preciseMovement);
             telemetry.update();
-
+*/
             // revolutions used to compare target to pos - easier to convert
             // angle used for user input - easier to visualize
             // gear ratio of 3
@@ -258,8 +258,7 @@ public class CompOpMode extends LinearOpMode {
             if (angle < MAX_ANGLE){
                 angle = MAX_ANGLE;
             } else if (gamepad1.right_stick_y > 0.5 || gamepad1.right_stick_y < -0.5)
-                angle += 0.55
-                        * gamepad1.right_stick_y;
+                angle -= 0.55 * gamepad1.right_stick_y;
 
        //     if (gamepad1.right_stick_y > 0.5 || gamepad1.right_stick_y < -0.5)
        //         angle += 0.4 * gamepad1.right_stick_y;
@@ -281,23 +280,23 @@ public class CompOpMode extends LinearOpMode {
             */
             // calculate target for given angle
             leftSlideTarget = (int) (-1 * slideTarget * SLIDE_MAX);
-            rightSlideTarget = (int) (slideTarget * SLIDE_MAX);
+         //   rightSlideTarget = (int) (slideTarget * SLIDE_MAX);
 
             // record current positions
             leftSlidePos = (int) (-1 * leftSlide.getCurrentPosition() / SLIDE_MAX);
-            rightSlidePos = (int) (rightSlide.getCurrentPosition() / SLIDE_MAX);
+         //   rightSlidePos = (int) (rightSlide.getCurrentPosition() / SLIDE_MAX);
 
             // set motor targets and powers
             leftSlide.setTargetPosition(leftSlideTarget);
-            rightSlide.setTargetPosition(rightSlideTarget);
+          //  rightSlide.setTargetPosition(rightSlideTarget);
             leftSlide.setPower(-0.5);
-            rightSlide.setPower(0.5);
+          //  rightSlide.setPower(0.5);
 
             // if not in correct position, run rotation to that position
             if (Math.abs(leftSlideTarget-leftSlidePos) > POSITION_TOLERANCE)
             {
                 leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+           //     rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
 
             // left stick changes target angle (0-MAX_ANGLE)
