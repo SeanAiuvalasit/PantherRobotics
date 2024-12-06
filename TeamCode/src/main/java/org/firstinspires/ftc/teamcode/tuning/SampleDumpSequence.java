@@ -4,18 +4,21 @@ package org.firstinspires.ftc.teamcode.tuning;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "MecanumTest")
+
+@TeleOp(name = "MecanumTest2")
 
 public class SampleDumpSequence extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException
     {
-        Servo intake = hardwareMap.get(Servo.class, "intake");
+        CRServo intake = hardwareMap.get(CRServo.class, "intake");
         Servo rotation = hardwareMap.get(Servo.class, "rotation");
 
         DcMotor leftSlide = hardwareMap.get(DcMotorEx.class, "leftSlide");
@@ -45,6 +48,8 @@ public class SampleDumpSequence extends LinearOpMode {
 
         boolean lastCycle = false;                  // used with below to read button presses properly
         boolean thisCycle = false;
+
+        intake.setPower(0);
 
         while(opModeIsActive())
         {
@@ -82,6 +87,7 @@ public class SampleDumpSequence extends LinearOpMode {
                 int leftTarget, rightTarget, leftSlideTarget, rightSlideTarget;
                 int leftPos = 0;
                 int leftSlidePos = 0;
+                double slideHold = 1.0;
 
                 // turn servo home
                 rotation.setPosition(SERVO_UP);
@@ -98,6 +104,10 @@ public class SampleDumpSequence extends LinearOpMode {
                     left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 }
+                left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                left.setPower(-0.1);
+                right.setPower(0.1);
 
                 // set slide target
                 leftSlide.setTargetPosition(-1 * SLIDE_MAX);
@@ -111,20 +121,28 @@ public class SampleDumpSequence extends LinearOpMode {
                     leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 }
+                leftSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                leftSlide.setPower(-1 * slideHold);
+                rightSlide.setPower(slideHold);
+
 
                 // turn servo
                 rotation.setPosition(SERVO_DUMP);
 
                 // TODO: release sample
-                intake.setPosition(INTAKE_DUMP);
-
+                intake.setPower(1);
+                sleep(2500);
+                intake.setPower(0);
                 // turn servo home
                 rotation.setPosition(SERVO_UP);
+
 
                 // set slide pos
                 leftSlide.setTargetPosition(-1 * SLIDE_MIN);
                 rightSlide.setTargetPosition(SLIDE_MIN);
-
+                leftSlide.setPower(-0.25);
+                rightSlide.setPower(0.25);
                 // go there
                 while (Math.abs(SLIDE_MIN-leftSlide.getCurrentPosition()) > POSITION_TOLERANCE)
                 {
@@ -135,7 +153,8 @@ public class SampleDumpSequence extends LinearOpMode {
                 // rotate home
                 left.setTargetPosition(-1 * ARM_UP);
                 right.setTargetPosition(ARM_UP);
-
+                left.setPower(-0.25);
+                right.setPower(0.25);
                 // go there
                 while (Math.abs(SLIDE_MAX-left.getCurrentPosition()) > POSITION_TOLERANCE)
                 {
