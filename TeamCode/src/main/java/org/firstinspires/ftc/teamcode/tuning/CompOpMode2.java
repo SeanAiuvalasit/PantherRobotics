@@ -115,8 +115,8 @@ public class CompOpMode2 extends LinearOpMode {
             // set motor targets and powers
             leftSlide.setTargetPosition(leftSlideTarget);
             rightSlide.setTargetPosition(rightSlideTarget);
-            leftSlide.setPower(-0.5);
-            rightSlide.setPower(0.5);
+            leftSlide.setPower(-0.25);
+            rightSlide.setPower(0.25);
 
             // if not in correct position, run rotation to that position
             if (Math.abs(leftSlideTarget-leftSlidePos) > POSITION_TOLERANCE)
@@ -140,13 +140,13 @@ public class CompOpMode2 extends LinearOpMode {
                 final double SERVO_UP2 = 1;
                 final double SERVO_DUMP2 = 0;
                 final int slide_y = 1300;
-                double speed2 = 0.5;
+                double speed2 = 0.2;
 
                 leftSlide.setTargetPosition(-1 * slide_y);
                 rightSlide.setTargetPosition(slide_y);
                 leftSlide.setPower(speed2);
                 rightSlide.setPower(speed2);
-                while (SLIDE_MAX != rightSlide.getCurrentPosition()) {
+                while (slide_y != rightSlide.getCurrentPosition()) {
                     leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 }
@@ -162,11 +162,11 @@ public class CompOpMode2 extends LinearOpMode {
                 final int ARM_UP = 1300;                    // position of arm up (ticks)
                 final int ARM_DOWN = 0;                     // position of arm down (ticks)
                 final int SLIDE_MIN = 15;
-                double speed = 0.5;
+                double speed = 0.15;
 
                 //rotates 90 deg
-                left.setTargetPosition(ARM_UP);
-                right.setTargetPosition(-1 * ARM_UP);
+                left.setTargetPosition(-1 * ARM_UP);
+                right.setTargetPosition(ARM_UP);
                 left.setPower(speed);
                 right.setPower(speed);
                 while (ARM_UP != right.getCurrentPosition()) {
@@ -247,7 +247,7 @@ public class CompOpMode2 extends LinearOpMode {
             //MecanumDrive Code
             drive = gamepad2.left_stick_y * 0.75 * preciseMovement;
             turn = gamepad2.right_stick_x *-1* preciseMovement;
-            strafe = gamepad2.left_stick_x * preciseMovement;
+            strafe = gamepad2.left_stick_x *-1 * preciseMovement;
 
             //strafe
             fLeftPower = drive + turn + strafe;
