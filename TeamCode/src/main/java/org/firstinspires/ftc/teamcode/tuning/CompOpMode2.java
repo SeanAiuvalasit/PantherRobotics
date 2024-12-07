@@ -237,6 +237,13 @@ public class CompOpMode2 extends LinearOpMode {
             else
                 servo2.setPower(0);
 
+            if (gamepad1.dpad_up)
+                servo1.setPosition(1);
+            else if (gamepad1.dpad_right)
+                servo1.setPosition(0.5);
+            else if (gamepad1.dpad_down)
+                servo1.setPosition(0);
+
             //MecanumDrive Code
             drive = gamepad2.left_stick_y * 0.75 * preciseMovement;
             turn = gamepad2.right_stick_x *-1* preciseMovement;
