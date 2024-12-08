@@ -75,8 +75,11 @@ public class CompOpMode2 extends LinearOpMode {
         boolean thisCycle = false;
         boolean lastCycle2 = false;
         boolean thisCycle2 = false;
+        boolean lastCycle3 = false;
+        boolean thisCycle3 = false;
         boolean isDown = false;
         double slideTarget = 0.0;                   // target position (0-1)
+        double servoPos = 0;
         //final double CPR = 5281.1;                  // ticks per revolution
 
         waitForStart();
@@ -93,6 +96,7 @@ public class CompOpMode2 extends LinearOpMode {
             int leftSlidePos = 0;
             int rightSlidePos = 0;
 
+
             if  (gamepad2.left_trigger > 0.5)
                 preciseMovement = 0.2;
             else
@@ -105,23 +109,23 @@ public class CompOpMode2 extends LinearOpMode {
             telemetry.update();
 
             // calculate target for given angle
-            leftSlideTarget = (int) (-1 * slideTarget * SLIDE_MAX);
+            //leftSlideTarget = (int) (-1 * slideTarget * SLIDE_MAX);
             rightSlideTarget = (int) (slideTarget * SLIDE_MAX);
 
             // record current positions
-            leftSlidePos = -1 * leftSlide.getCurrentPosition() / SLIDE_MAX;
+        //    leftSlidePos = -1 * leftSlide.getCurrentPosition() / SLIDE_MAX;
             rightSlidePos = rightSlide.getCurrentPosition() / SLIDE_MAX;
 
             // set motor targets and powers
-            leftSlide.setTargetPosition(leftSlideTarget);
+        //    leftSlide.setTargetPosition(leftSlideTarget);
             rightSlide.setTargetPosition(rightSlideTarget);
-            leftSlide.setPower(-0.25);
+        //    leftSlide.setPower(-0.25);
             rightSlide.setPower(0.25);
 
             // if not in correct position, run rotation to that position
-            if (Math.abs(leftSlideTarget-leftSlidePos) > POSITION_TOLERANCE)
+            if (Math.abs(rightSlideTarget-rightSlidePos) > POSITION_TOLERANCE)
             {
-                leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            //    leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
 
@@ -134,66 +138,89 @@ public class CompOpMode2 extends LinearOpMode {
                 slideTarget -= (0.01 *  gamepad1.left_stick_y);
 
             //slide button
+            /**
             lastCycle2 = thisCycle2;
             thisCycle2 = gamepad1.y;
             if (lastCycle2 && thisCycle2){
                 final double SERVO_UP2 = 1;
                 final double SERVO_DUMP2 = 0;
-                final int slide_y = 1300;
+                slideTarget = 1300;
                 double speed2 = 0.2;
 
-                leftSlide.setTargetPosition(-1 * slide_y);
-                rightSlide.setTargetPosition(slide_y);
-                leftSlide.setPower(speed2);
+            //    leftSlide.setTargetPosition((int) (-1 * slideTarget));
+                rightSlide.setTargetPosition((int) slideTarget);
+            //    leftSlide.setPower(speed2);
                 rightSlide.setPower(speed2);
-                while (slide_y != rightSlide.getCurrentPosition()) {
-                    leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                while (slideTarget != rightSlide.getCurrentPosition()) {
+                //    leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 }
             }
-
+*/
 
             // intake button
             lastCycle = thisCycle;
             thisCycle = gamepad1.b;
             if (lastCycle && thisCycle) {
-                final double SERVO_UP = 1;
-                final double SERVO_DUMP = 0;
+                final double SERVO_UP = 0;
+                final double SERVO_DUMP = 1;
                 final int ARM_UP = 1300;                    // position of arm up (ticks)
                 final int ARM_DOWN = 0;                     // position of arm down (ticks)
                 final int SLIDE_MIN = 15;
-                double speed = 0.15;
+                double speed = 0.25;
 
-                //rotates 90 deg
-                left.setTargetPosition(-1 * ARM_UP);
-                right.setTargetPosition(ARM_UP);
-                left.setPower(speed);
-                right.setPower(speed);
-                while (ARM_UP != right.getCurrentPosition()) {
-                    left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                }
-                left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                left.setPower(-0.05);
-                right.setPower(0.05);
+                //turns servo up.
+                servo1.setPosition(0.5);
 
-                //slides to top
-                leftSlide.setTargetPosition(-1 * SLIDE_MAX);
-                rightSlide.setTargetPosition(SLIDE_MAX);
-                leftSlide.setPower(speed);
+                //slides at 0 deg
+                //leftSlide.setTargetPosition(-1 * SLIDE_MIN);
+                rightSlide.setTargetPosition(SLIDE_MIN);
+                //leftSlide.setPower(speed);
                 rightSlide.setPower(speed);
-                while (SLIDE_MAX != rightSlide.getCurrentPosition()) {
-                    leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                while (SLIDE_MIN != rightSlide.getCurrentPosition()) {
+                    //leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 }
-                leftSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                //leftSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 rightSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                leftSlide.setPower(-0.1);
+                //leftSlide.setPower(0.05);
+                rightSlide.setPower(-0.05);
+
+
+                //rotates 90 deg
+                //left.setTargetPosition(-1 * ARM_UP);
+                right.setTargetPosition(ARM_UP);
+                //left.setPower(speed);
+                right.setPower(speed);
+                while (ARM_UP != right.getCurrentPosition()) {
+                   // left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                }
+                //left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+               // left.setPower(-0.05);
+                right.setPower(0.05);
+
+                /**
+                // turn servo home
+                servo1.setPosition(SERVO_DUMP);
+
+                //slides to top
+                //leftSlide.setTargetPosition(-1 * SLIDE_MAX);
+                rightSlide.setTargetPosition(SLIDE_MAX);
+              //  leftSlide.setPower(speed);
+                rightSlide.setPower(speed);
+                while (SLIDE_MAX != rightSlide.getCurrentPosition()) {
+                   // leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                }
+              //  leftSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+             //   leftSlide.setPower(-0.1);
                 rightSlide.setPower(0.1);
 
                 // rotate servos
-                servo1.setPosition(SERVO_DUMP);
+                servo1.setPosition(SERVO_UP);
 
                 // intake
                 servo2.setPower(speed);
@@ -201,29 +228,66 @@ public class CompOpMode2 extends LinearOpMode {
                 servo2.setPower(0);
 
                 // turn servo home
-                servo1.setPosition(SERVO_UP);
+                servo1.setPosition(SERVO_DUMP);
 
                 //slides to bottom
-                leftSlide.setTargetPosition(-1 * SLIDE_MIN);
+              //  leftSlide.setTargetPosition(-1 * SLIDE_MIN);
                 rightSlide.setTargetPosition(SLIDE_MIN);
-                leftSlide.setPower(speed);
+               // leftSlide.setPower(speed);
                 rightSlide.setPower(speed);
                 while (SLIDE_MIN != rightSlide.getCurrentPosition()) {
-                    leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                  //  leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 }
-                leftSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+              //  leftSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 rightSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                leftSlide.setPower(0.1);
-                rightSlide.setPower(-0.1);
+              //  leftSlide.setPower(0.05);
+                rightSlide.setPower(-0.05);
 
                 //rotate 0 deg
-                left.setTargetPosition(ARM_DOWN);
+              //  left.setTargetPosition(ARM_DOWN);
                 right.setTargetPosition(-1 * ARM_DOWN);
-                left.setPower(0.7 * speed);
+              //  left.setPower(0.7 * speed);
                 right.setPower(0.7 * speed);
                 while (ARM_DOWN != right.getCurrentPosition()) {
-                    left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                  //  left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                }
+
+                rightSlide.setPower(0);
+     */       }
+
+            // intake button
+            lastCycle3 = thisCycle3;
+            thisCycle3 = gamepad1.a;
+            if (lastCycle3 && thisCycle3) {
+                final double SERVO_UP = 0;
+                final double SERVO_DUMP = 1;
+                final int ARM_UP = 1300;                    // position of arm up (ticks)
+                final int ARM_DOWN = 0;                     // position of arm down (ticks)
+                final int SLIDE_MIN = 15;
+                double speed = 0.25;
+
+                servo1.setPosition(0.5);
+                //slide 0 deg
+
+                rightSlide.setTargetPosition(SLIDE_MIN);
+                rightSlide.setPower(speed);
+                while (SLIDE_MIN != rightSlide.getCurrentPosition()) {
+                    rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                }
+                //  leftSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                //  leftSlide.setPower(0.05);
+                rightSlide.setPower(-0.05);
+
+                //rotate 0 deg
+                //  left.setTargetPosition(ARM_DOWN);
+                right.setTargetPosition(-1 * ARM_DOWN);
+                //  left.setPower(0.7 * speed);
+                right.setPower(0.7 * speed);
+                while (ARM_DOWN != right.getCurrentPosition()) {
+                    //  left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 }
 
@@ -231,23 +295,35 @@ public class CompOpMode2 extends LinearOpMode {
             }
 
             if(gamepad2.right_bumper)
-                servo2.setPower(-0.333);
+                servo2.setPower(-1);
             else if (gamepad2.left_bumper)
-                servo2.setPower(0.333);
+                servo2.setPower(1);
             else
                 servo2.setPower(0);
 
-            if (gamepad1.dpad_up)
-                servo1.setPosition(1);
-            else if (gamepad1.dpad_right)
+
+            if (gamepad1.dpad_right)
+                servo1.setPosition(0.25);
+            else if (gamepad1.dpad_left)
                 servo1.setPosition(0.5);
             else if (gamepad1.dpad_down)
-                servo1.setPosition(0);
+                servo1.setPosition(0.89);
 
+          /**  if (servoPos > 1)
+                servoPos = 1;
+            else if (servoPos < 0)
+                slideTarget = 0;
+            else if (gamepad1.dpad_down)
+                servoPos += 0.001;
+            else if (gamepad1.dpad_up)
+                servoPos -= 0.001;
+
+            servo1.setPosition(servoPos);
+            */
             //MecanumDrive Code
-            drive = gamepad2.left_stick_y * 0.75 * preciseMovement;
-            turn = gamepad2.right_stick_x *-1* preciseMovement;
-            strafe = gamepad2.left_stick_x *-1 * preciseMovement;
+            drive = gamepad2.left_stick_y * 0.5 * preciseMovement;
+            turn = gamepad2.right_stick_x *-0.5 * preciseMovement;
+            strafe = gamepad2.left_stick_x *-0.5 * preciseMovement;
 
             //strafe
             fLeftPower = drive + turn + strafe;
