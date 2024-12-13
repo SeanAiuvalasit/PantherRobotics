@@ -18,21 +18,33 @@ import org.firstinspires.ftc.robotcore.external.JavaUtil;
 public class MecanumDriveTest extends LinearOpMode{
     @Override
     public void runOpMode() throws InterruptedException {
+        //MecanumDrive Code
         double drive, turn, strafe;
-        double fLeftPower, fRightPower,bLeftPower, bRightPower;
-        //Hware hware = new Hware(hardwareMap);
-        //leftFront = hardwareMap.get(DcMotor.class, "LF");
-        //rightFront = hardwareMap.get(DcMotor.class, "RF");
-        //leftBack = hardwareMap.get(DcMotor.class, "LB");
-        //rightBack = hardwareMap.get(DcMotor.class, "RB");
+        double fLeftPower, fRightPower, bLeftPower, bRightPower;
+        DcMotor leftFront = hardwareMap.get(DcMotor.class, "LF");
+        DcMotor rightFront = hardwareMap.get(DcMotor.class, "RF");
+        DcMotor leftBack = hardwareMap.get(DcMotor.class, "LB");
+        DcMotor rightBack = hardwareMap.get(DcMotor.class, "RB");
+        rightBack.setDirection(DcMotor.Direction.REVERSE);
+        rightFront.setDirection(DcMotor.Direction.REVERSE);
+        leftBack.setDirection(DcMotor.Direction.FORWARD);
+        leftFront.setDirection(DcMotor.Direction.FORWARD);
+        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
         waitForStart();
         while(opModeIsActive()){
-            drive = gamepad1.left_stick_y * -1;
-            turn = gamepad1.right_stick_x;
-            strafe = gamepad1.left_stick_x;
-
+            //MecanumDrive Code
+            drive = gamepad1.left_stick_y * 0.1;
+            turn = gamepad1.right_stick_x * -0.1;
+            strafe = gamepad1.left_stick_x * -0.1;
 
             //strafe
             fLeftPower = drive + turn + strafe;
@@ -42,22 +54,22 @@ public class MecanumDriveTest extends LinearOpMode{
 
             double[] appliedPowers = scalePowers(fLeftPower, fRightPower, bLeftPower, bRightPower);
 
-            //leftFront.setPower(appliedPowers[0]);
-            //leftBack.setPower(appliedPowers[2]);
-            //rightFront.setPower(appliedPowers[1]);
-            //rightBack.setPower(appliedPowers[3]);
+            leftFront.setPower(appliedPowers[0]);
+            leftBack.setPower(appliedPowers[2]);
+            rightFront.setPower(appliedPowers[1]);
+            rightBack.setPower(appliedPowers[3]);
         }
     }
-    public double[] scalePowers(double fLeftPower, double fRightPower, double bLeftPower, double bRightPower){
+
+    public double[] scalePowers(double fLeftPower, double fRightPower, double bLeftPower, double bRightPower) {
         double max = Math.max(Math.abs(fLeftPower), Math.max(Math.abs(fRightPower), Math.max(Math.abs(bLeftPower), Math.abs(bRightPower))));
-        if(max > 1){
+        if (max > 1) {
             fLeftPower /= max;
             fRightPower /= max;
             bLeftPower /= max;
             bRightPower /= max;
         }
 
-        double [] motorPowers = new double[]{fLeftPower, fRightPower, bLeftPower, bRightPower};
-        return motorPowers;
+        return new double[]{fLeftPower, fRightPower, bLeftPower, bRightPower};
     }
 }
