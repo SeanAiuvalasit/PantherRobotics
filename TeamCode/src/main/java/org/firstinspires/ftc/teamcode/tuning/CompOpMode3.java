@@ -63,8 +63,8 @@ public class CompOpMode3 extends LinearOpMode {
         Servo clawRotation = hardwareMap.get(Servo.class, "clawRotation");
         Servo clawClamp = hardwareMap.get(Servo.class, "clawClamp");
 
-        double XTarget = 0.0;                   // target position (0-1)
-        double clawTarget = 0.0;
+        double XTarget = 0.0;                   // target position for Horizontal slides (0-1)
+        double clawTarget = 0.0;                // claw target position to twist the claw
         double rotationTarget = 0.0;
         boolean clawOut = false;
         boolean clawOpen = false;
@@ -95,13 +95,13 @@ public class CompOpMode3 extends LinearOpMode {
             double preciseMovement = 1.0;
 
             //TODO: add or subtract joystick value?
-            if (gamepad1.right_stick_y > 0.5 || gamepad1.right_stick_y < -0.5)
+            if (gamepad1.right_stick_y > 0.5 || gamepad1.right_stick_y < -0.5) //pushes slide horizontally
                 XTarget -= (0.01 *  gamepad1.right_stick_y);
-            if (gamepad1.left_stick_x > 0.5 || gamepad1.left_stick_x < -0.5)
+            if (gamepad1.left_stick_x > 0.5 || gamepad1.left_stick_x < -0.5) //spins claw
                 clawTarget -= (0.01 *  gamepad1.left_stick_x);
-            if (gamepad1.left_bumper)
+            if (gamepad1.left_bumper) //red part 90 degrees down?
                 rotationTarget -= 0.01;
-            else if (gamepad1.right_bumper)
+            else if (gamepad1.right_bumper)//red part 90 degrees down?
                 rotationTarget += 0.01;
 
             leftX.setPosition(XTarget);
@@ -110,7 +110,7 @@ public class CompOpMode3 extends LinearOpMode {
             rightClawPos.setPosition(1 - rotationTarget);
             clawRotation.setPosition(clawTarget);
 
-            if(gamepad1.a)
+            if(gamepad1.a) //predetermined paths to pick block
             {
                 clawOut = !clawOut;
                 if(clawOut)
@@ -132,7 +132,7 @@ public class CompOpMode3 extends LinearOpMode {
                 }
             }
 
-            if(gamepad1.y)
+            if(gamepad1.y) //opening and closing of claw
             {
                 clawOpen = !clawOpen;
                 if (clawOpen)
@@ -141,7 +141,7 @@ public class CompOpMode3 extends LinearOpMode {
                     clawClamp.setPosition(CLAW_CLOSED);
             }
 
-            if(gamepad1.x)
+            if(gamepad1.x) //runs specimen path
             {
                 atSpecimenPos = !atSpecimenPos;
                 if(!atSpecimenPos)
@@ -164,7 +164,7 @@ public class CompOpMode3 extends LinearOpMode {
                 }
             }
 
-            if(gamepad1.b) {
+            if(gamepad1.b) { //drops block
                 atBucketPos = !atBucketPos;
                 if (!atBucketPos) {
                     leftY.setTargetPosition(BUCKET_HEIGHT);
@@ -216,4 +216,5 @@ public class CompOpMode3 extends LinearOpMode {
         return new double[]{fLeftPower, fRightPower, bLeftPower, bRightPower};
 
     }
+
 }
