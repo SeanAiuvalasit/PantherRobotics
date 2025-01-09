@@ -14,73 +14,63 @@ public class servoTest extends LinearOpMode{
     @Override
     public void runOpMode() throws InterruptedException {
 
-        DcMotor leftSlide = hardwareMap.get(DcMotor.class, "leftSlide");
-        DcMotor rightSlide = hardwareMap.get(DcMotor.class, "rightSlide");
-
-        leftSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftSlide.setDirection(DcMotor.Direction.FORWARD);
-        leftSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        rightSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightSlide.setDirection(DcMotor.Direction.FORWARD);
-        rightSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-/*
-        Servo leftX = hardwareMap.get(Servo.class, "leftX");
+        DcMotorEx leftY = hardwareMap.get(DcMotorEx.class, "leftSlide");
+     //   DcMotor rightY = hardwareMap.get(DcMotorEx.class, "rightSlide");
+        leftY.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftY.setDirection(DcMotor.Direction.FORWARD);
+        leftY.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftY.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+   /**     rightY.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightY.setDirection(DcMotor.Direction.FORWARD);
+        rightY.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightY.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+*/
+        //Servos
+    /**    Servo leftX = hardwareMap.get(Servo.class, "leftX");
         Servo rightX = hardwareMap.get(Servo.class, "rightX");
         Servo leftClawPos = hardwareMap.get(Servo.class, "leftClawPos");
         Servo rightClawPos = hardwareMap.get(Servo.class, "rightClawPos");
+        Servo clawRotation = hardwareMap.get(Servo.class, "clawRotation");
+        Servo clawClamp = hardwareMap.get(Servo.class, "clawClamp");
 */
+        // TODO: find servo positions
+        final int SPECIMEN_HEIGHT = 1000;
+        final int BUCKET_HEIGHT = 0;
+        final int Y_HOME = 0;
+        boolean atSpecimenPos = false;
+
         waitForStart();
         while(opModeIsActive()){
-            telemetry.addData("left pos: ", leftSlide.getCurrentPosition());
+            telemetry.addData("leftY pos: ", leftY.getCurrentPosition());
             telemetry.update();
 
-            leftSlide.setTargetPosition(500);
-            leftSlide.setPower(0.25);
-            leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            /*
-            if(gamepad1.a)
+            if(gamepad1.x) //runs specimen path
             {
-                leftX.setPosition(0.25);
-                sleep(1000);
-                leftX.setPosition(0.75);
-                sleep(2000);
-                rightX.setPosition(0.25);
-                sleep(1000);
-                rightX.setPosition(0.75);
+                atSpecimenPos = !atSpecimenPos;
+                if(!atSpecimenPos)
+                {
+                    leftY.setTargetPosition(SPECIMEN_HEIGHT);
+                    leftY.setTargetPositionTolerance(1);
+                    leftY.setPower(0.3);
+               //     rightY.setTargetPosition(-1 * SPECIMEN_HEIGHT);
+                    leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+               //     rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+               //     leftX.setPosition(SPECIMEN_OUT);
+               //     rightX.setPosition(1 - SPECIMEN_OUT);
+                }
+                else
+                {
+                    leftY.setTargetPosition(Y_HOME);
+                    leftY.setTargetPositionTolerance(1);
+                    leftY.setPower(0.3);
+                //    rightY.setTargetPosition(-1 * Y_HOME);
+                    leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                 //   rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                 //   leftX.setPosition(X_HOME);
+                 //   rightX.setPosition(1 - X_HOME);
+                }
             }
-
-            if(gamepad1.b)
-            {
-                leftClawPos.setPosition(0.25);
-                sleep(1000);
-                leftClawPos.setPosition(0.75);
-                sleep(2000);
-                rightClawPos.setPosition(0.25);
-                sleep(1000);
-                rightClawPos.setPosition(0.75);
-            }
-             */
-
-/*
-            if(gamepad1.a)
-                rightSlide.setPower(0.1);
-            else if (gamepad1.b)
-                rightSlide.setPower(-0.1);
-            else
-                rightSlide.setPower(0);
-
-            if(gamepad1.x)
-                leftSlide.setPower(0.1);
-            else if (gamepad1.y)
-                leftSlide.setPower(-0.1);
-            else
-                leftSlide.setPower(0);
-
- */
         }
     }
 }
