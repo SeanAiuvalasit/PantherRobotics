@@ -30,8 +30,8 @@ public class servoTest extends LinearOpMode{
         Servo rightX = hardwareMap.get(Servo.class, "rightX");
         Servo leftClawPos = hardwareMap.get(Servo.class, "leftClawPos");
         Servo rightClawPos = hardwareMap.get(Servo.class, "rightClawPos");
-   //     Servo clawRotation = hardwareMap.get(Servo.class, "clawRotation");
-        Servo clawClamp = hardwareMap.get(Servo.class, "clawClamp");
+        Servo clawRotation = hardwareMap.get(Servo.class, "clawRotation");
+     //   Servo clawClamp = hardwareMap.get(Servo.class, "clawClamp");
 
         // Y: vertical positions
         final int SPECIMEN_HEIGHT = 1000;
@@ -52,7 +52,7 @@ public class servoTest extends LinearOpMode{
             telemetry.addData("rightY pos: ", rightY.getCurrentPosition());
             telemetry.update();
 
-            lastCycle = thisCycle;
+            /**lastCycle = thisCycle;
             thisCycle = gamepad1.x;
             if (lastCycle && thisCycle) {
                 //    leftY.setTargetPosition(SPECIMEN_HEIGHT);
@@ -96,38 +96,29 @@ public class servoTest extends LinearOpMode{
                  //   rightX.setPosition(1 - X_HOME);
                 }*/
 
-           /**  if(gamepad1.x){
+             if(gamepad1.x){
                  leftX.setPosition(0);
+                 rightX.setPosition(1);
              }
              if(gamepad1.y){
                  leftX.setPosition(1);
-             } */
-             if(gamepad1.a){
                  rightX.setPosition(0);
-             }
-             if(gamepad1.b){
-                 rightX.setPosition(1);
              }
 
             if(gamepad1.dpad_up){
-                rightClawPos.setPosition(1);
-            }
-            if(gamepad1.dpad_down){
                 rightClawPos.setPosition(0);
-            }
-
-            if(gamepad1.dpad_left){
                 leftClawPos.setPosition(1);
             }
-            if(gamepad1.dpad_right){
+            if(gamepad1.dpad_down){
+                rightClawPos.setPosition(1);
                 leftClawPos.setPosition(0);
             }
 
             if(gamepad1.right_bumper){
-                clawClamp.setPosition(1);
+                clawRotation.setPosition(1);
             }
             if(gamepad1.left_bumper){
-                clawClamp.setPosition(0);
+                clawRotation.setPosition(0);
             }
             }
         }
