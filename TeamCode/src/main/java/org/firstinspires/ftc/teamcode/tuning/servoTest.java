@@ -34,14 +34,16 @@ public class servoTest extends LinearOpMode{
      //   Servo clawClamp = hardwareMap.get(Servo.class, "clawClamp");
 
         // Y: vertical positions
-        final int SPECIMEN_HEIGHT = 1000;
+        final int SPECIMEN_HEIGHT = 4000;
         final int BUCKET_HEIGHT = 0;
         final int Y_HOME = 0;
+        double YSpeed = 0.7;
         boolean atSpecimenPos = false;
         boolean lastCycle = false;    // used with below to read button presses properly
         boolean thisCycle = false;
         boolean lastCycle2 = false;    // used with below to read button presses properly
         boolean thisCycle2 = false;
+        boolean up = false;
 
         // X: Servo stuff
         double XTarget = 0.0;
@@ -52,54 +54,41 @@ public class servoTest extends LinearOpMode{
             telemetry.addData("rightY pos: ", rightY.getCurrentPosition());
             telemetry.update();
 
-            /**lastCycle = thisCycle;
+            lastCycle = thisCycle;
             thisCycle = gamepad1.x;
             if (lastCycle && thisCycle) {
-                //    leftY.setTargetPosition(SPECIMEN_HEIGHT);
-                    rightY.setTargetPosition(-1 * SPECIMEN_HEIGHT);
+                if (up) {
+                    leftY.setTargetPosition(0);
+                    rightY.setTargetPosition(0);
 
-                //    leftY.setTargetPositionTolerance(1);
-               //     leftY.setPower(0.3);
+                    leftY.setTargetPositionTolerance(1);
+                    leftY.setPower(0.3);
                     rightY.setTargetPositionTolerance(1);
                     rightY.setPower(0.3);
 
-              //      leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                }
-
-            lastCycle2 = thisCycle2;
-            thisCycle2 = gamepad1.y;
-            if (lastCycle2 && thisCycle2) {
-                leftY.setTargetPosition(SPECIMEN_HEIGHT);
-               // rightY.setTargetPosition(-1 * SPECIMEN_HEIGHT);
-
-                leftY.setTargetPositionTolerance(1);
-                leftY.setPower(0.3);
-              //  rightY.setTargetPositionTolerance(1);
-              //  rightY.setPower(0.3);
-
-                leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-              //  rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            }
-            /**  leftX.setPosition(SPECIMEN_OUT);
-             rightX.setPosition(1 - SPECIMEN_OUT);*/
-
-             /**   else
-                {
-                    leftY.setTargetPosition(Y_HOME);
-                    leftY.setTargetPositionTolerance(1);
-                    leftY.setPower(0.3);
-                //    rightY.setTargetPosition(-1 * Y_HOME);
                     leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                 //   rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                 //   leftX.setPosition(X_HOME);
-                 //   rightX.setPosition(1 - X_HOME);
-                }*/
+                    rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    up = false;
+                } else {
+                    leftY.setTargetPosition(SPECIMEN_HEIGHT);
+                    rightY.setTargetPosition(-1 * SPECIMEN_HEIGHT);
 
-             if(gamepad1.x){
+                    leftY.setTargetPositionTolerance(1);
+                    leftY.setPower(0.2);
+                    rightY.setTargetPositionTolerance(1);
+                    rightY.setPower(0.2);
+
+                    leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    up = true;
+                }
+            }
+
+
+            /** if(gamepad1.x){
                  leftX.setPosition(0);
                  rightX.setPosition(1);
-             }
+             }*/
              if(gamepad1.y){
                  leftX.setPosition(1);
                  rightX.setPosition(0);
