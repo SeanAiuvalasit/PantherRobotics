@@ -109,6 +109,46 @@ public class servoTest extends LinearOpMode{
             if(gamepad1.left_bumper){
                 clawRotation.setPosition(0);
             }
+            if(gamepad1.a){
+                rightClawPos.setPosition(0);
+                leftClawPos.setPosition(1);
+
+                leftY.setTargetPosition(-1 * SPECIMEN_HEIGHT);
+                rightY.setTargetPosition(SPECIMEN_HEIGHT);
+
+                leftY.setTargetPosition(0);
+                rightY.setTargetPosition(0);
+
+                leftY.setTargetPositionTolerance(1);
+                leftY.setPower(0.3);
+                rightY.setTargetPositionTolerance(1);
+                rightY.setPower(0.3);
+
+                leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                wait(1000);
+                rightClawPos.setPosition(1);
+                leftClawPos.setPosition(0);
+
+                clawRotation.setPosition(1);
+                wait(500);
+                clawRotation.setPosition(0);
+
+                rightClawPos.setPosition(0);
+                leftClawPos.setPosition(1);
+
+                leftY.setTargetPosition(SPECIMEN_HEIGHT);
+                rightY.setTargetPosition(-1 * SPECIMEN_HEIGHT);
+
+                leftY.setTargetPositionTolerance(1);
+                leftY.setPower(0.2);
+                rightY.setTargetPositionTolerance(1);
+                rightY.setPower(0.2);
+
+                leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
             }
         }
     }
