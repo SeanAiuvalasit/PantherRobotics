@@ -30,12 +30,32 @@ public class servoTest extends LinearOpMode {
         Servo rightX = hardwareMap.get(Servo.class, "rightX");
         Servo leftClawPos = hardwareMap.get(Servo.class, "leftClawPos");
         Servo rightClawPos = hardwareMap.get(Servo.class, "rightClawPos");
-        //Servo clawRotation = hardwareMap.get(Servo.class, "clawWrist");
+        Servo clawWrist = hardwareMap.get(Servo.class, "clawWrist");
         Servo clawClamp = hardwareMap.get(Servo.class, "clawClamp");
         Servo clawAngle = hardwareMap.get(Servo.class, "clawAngle");
 
+        //Mecanum Drive Code
+        double drive, turn, strafe;
+        double fLeftPower, fRightPower, bLeftPower, bRightPower;
+        DcMotor leftFront = hardwareMap.get(DcMotor.class, "LF");
+        DcMotor rightFront = hardwareMap.get(DcMotor.class, "RF");
+        DcMotor leftBack = hardwareMap.get(DcMotor.class, "LB");
+        DcMotor rightBack = hardwareMap.get(DcMotor.class, "RB");
+        rightBack.setDirection(DcMotor.Direction.REVERSE);
+        rightFront.setDirection(DcMotor.Direction.REVERSE);
+        leftBack.setDirection(DcMotor.Direction.FORWARD);
+        leftFront.setDirection(DcMotor.Direction.FORWARD);
+        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         // Y: vertical positions
-        final int SPECIMEN_HEIGHT = 4000;
+        final int SPECIMEN_HEIGHT = 4300;
         final int BUCKET_HEIGHT = 0;
         final int Y_HOME = 0;
         double YSpeed = 0.7;
@@ -64,6 +84,8 @@ public class servoTest extends LinearOpMode {
 
         waitForStart();
         while (opModeIsActive()) {
+            double preciseMovement = 1.0;
+
             telemetry.addData("leftY pos: ", leftY.getCurrentPosition());
             telemetry.addData("rightY pos: ", rightY.getCurrentPosition());
             telemetry.addData("leftx: ", leftX.getPosition());
@@ -75,6 +97,14 @@ public class servoTest extends LinearOpMode {
             telemetry.update();
 
             /**
+             * changes precise movement based on left_trigger
+             */
+            if  (gamepad2.left_trigger > 0.5)
+                preciseMovement = 0.2;
+            else
+                preciseMovement = 1.0;
+
+            /**
              * Extend Horizontal Slides about 3/4th of the way
              * Turn arm into extended position - right above the blocks
              *
@@ -84,103 +114,15 @@ public class servoTest extends LinearOpMode {
             if (gamepad2.a) {
                 leftX.setPosition(1);
                 rightX.setPosition(0);
-                if (leftX.getPosition() == 1) {
+
                     rightClawPos.setPosition(0.3);   // rotation of claw
                     leftClawPos.setPosition(0.7);
                     //clawClamp.wait(1000);
                     clawClamp.setPosition(0.75);     // picking up blocks
-                    clawAngle.setPosition(0.2);      //
-                }
-            }
-
-            if (gamepad2.b) {
-                rightClawPos.setPosition(1);
-                leftClawPos.setPosition(0);
-                clawClamp.setPosition(1);
-                if (rightClawPos.getPosition() == 1) {
-                    clawAngle.setPosition(0.4);
-                    leftX.setPosition(0);
-                    rightX.setPosition(1);
-                }
-            }
-
-            if (gamepad2.y) {
-                if(!clawDown){
-                    leftClawPos.setPosition(1);
-                    rightClawPos.setPosition(0);
-                    clawDown = true;
-                }else{
-                    clawDown = false;
-                    leftClawPos.setPosition(0.6);
-                    rightClawPos.setPosition(0.4);
-                }
-            }
-
-            if(gamepad2.x){
-                clawClamp.setPosition(1);
-                leftX.setPosition(0.35);
-                rightX.setPosition(0.65);
-                leftClawPos.setPosition(0.75);
-                rightClawPos.setPosition(0.25);
+                    clawAngle.setPosition(0.5); //
+                    clawWrist.setPosition(1);
 
                 if(true){
-                    leftY.setTargetPosition(1300);
-                    rightY.setTargetPosition(-1300);
-
-                    leftY.setTargetPositionTolerance(1);
-                    leftY.setPower(0.2);
-                    rightY.setTargetPositionTolerance(1);
-                    rightY.setPower(0.2);
-
-                    leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                }
-                clawAngle.setPosition(0.75);
-            }
-
-            /**
-             * Opening and closing of claw      //MAYBE KEEP ON A
-             * If pressed once should close claw
-             * I
-             * f pressed again should open claw
-             * *keeps repeating this pattern
-
-            if (gamepad2.y) {
-                if (clawOpen) {
-                    clawClampTarget = 0.9;
-                    clawClamp.setPosition(clawClampTarget);
-                    clawOpen = false;
-                } else {
-                    clawClamp.setPosition(0);
-                    clawOpen = true;
-                }
-            }
-*/
-            /**
-             * Allow small movement of horizontal slide
-             * If moved up should slowly extend horizontal slide
-             * If moved down should slowly retract horizontal slide
-
-             if (gamepad1.right_stick_y > 0.5 || gamepad1.right_stick_y < -0.5){
-             clawClampTarget -= (0.01 *  gamepad1.right_stick_y);
-             clawClamp.setPosition(clawClampTarget);
-             }
-             */
-            /**
-             * to twist the claw  //MAYBE MOVE TO A
-             * If moved left should turn the claw angle position more left
-             * If moved right should turn the claw angle position more right
-
-             if(gamepad1.left_stick_x > 0.5 || gamepad1.left_stick_x < -0.5) {
-             clawTarget -= (0.01 *  gamepad1.left_stick_x);
-             rightClawPos.setPosition(clawTarget);
-             leftClawPos.setPosition(clawTarget);
-             }
-             */
-            lastCycle = thisCycle;
-            thisCycle = gamepad2.dpad_up;
-            if (lastCycle && thisCycle) {
-                if (up) {
                     leftY.setTargetPosition(0);
                     rightY.setTargetPosition(0);
 
@@ -191,10 +133,26 @@ public class servoTest extends LinearOpMode {
 
                     leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    up = false;
-                } else {
-                    leftY.setTargetPosition(SPECIMEN_HEIGHT);
-                    rightY.setTargetPosition(-1 * SPECIMEN_HEIGHT);
+                }
+            }
+
+            /**
+             *Closes the claw, rotates it to home position, and returns horizontal slides to home
+             * Vertical slides go to 0
+             */
+            if (gamepad2.b) {
+                clawClamp.setPosition(1);
+                rightClawPos.setPosition(1);
+                leftClawPos.setPosition(0);
+
+                    clawAngle.setPosition(0.4);
+                    leftX.setPosition(0);
+                    rightX.setPosition(1);
+                    clawWrist.setPosition(1);
+
+                if(true){
+                    leftY.setTargetPosition(0);
+                    rightY.setTargetPosition(0);
 
                     leftY.setTargetPositionTolerance(1);
                     leftY.setPower(0.2);
@@ -203,8 +161,111 @@ public class servoTest extends LinearOpMode {
 
                     leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    up = true;
                 }
+            }
+
+            /**
+             * Makes the claw go down more to pick up blocks, and if pressed again would go back up
+             */
+            if (gamepad2.y) {
+                if(!clawDown){
+                    leftClawPos.setPosition(1);
+                    rightClawPos.setPosition(0);
+                    clawWrist.setPosition(1);
+                    clawDown = true;
+                }else{
+                    clawDown = false;
+                    leftClawPos.setPosition(0.6);
+                    rightClawPos.setPosition(0.4);
+                    clawWrist.setPosition(1);
+                }
+            }
+
+            /**
+             * Brings horizontal slides out, rotates claw into position
+             */
+            if(gamepad2.x){
+                clawClamp.setPosition(1);
+                clawWrist.setPosition(0);
+                leftX.setPosition(0.5);
+                rightX.setPosition(0.5);
+                leftClawPos.setPosition(0.75);
+                rightClawPos.setPosition(0.25);
+
+                if(true){
+                    leftY.setTargetPosition(1300);
+                    rightY.setTargetPosition(-1300);
+
+                    leftY.setTargetPositionTolerance(1);
+                    leftY.setPower(0.3);
+                    rightY.setTargetPositionTolerance(1);
+                    rightY.setPower(0.3);
+
+                    leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                }
+                clawAngle.setPosition(0.15);
+            }
+
+            /**
+             * Vertical slides go down to 0
+             */
+            if(gamepad2.dpad_down){
+                /*
+                leftY.setTargetPosition(100);
+                rightY.setTargetPosition(100);
+
+                leftY.setTargetPositionTolerance(1);
+                leftY.setPower(1);
+                rightY.setTargetPositionTolerance(1);
+                rightY.setPower(1);
+
+                leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                leftY.setTargetPosition(0);
+                rightY.setTargetPosition(0);
+                leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                */
+                rightY.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                leftY.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                rightY.setPower(0);
+                leftY.setPower(0);
+
+
+                //rightY.set();
+            }
+
+            /**
+             * Vertical slides go up to vertical height
+             */
+            if (gamepad2.dpad_up) {
+                if(leftY.getCurrentPosition()<50 && rightY.getCurrentPosition()>-50) {
+                    leftY.setTargetPosition(SPECIMEN_HEIGHT);
+                    rightY.setTargetPosition(-1 * SPECIMEN_HEIGHT);
+
+                    leftY.setTargetPositionTolerance(1);
+                    leftY.setPower(0.35);
+                    rightY.setTargetPositionTolerance(1);
+                    rightY.setPower(0.35);
+
+                    leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                }
+            }
+
+            if (gamepad1.dpad_right) {
+                clawClamp.setPosition(1);
+            }
+            if (gamepad1.dpad_left) {
+                clawClamp.setPosition(0.75);
+            }
+            if (gamepad1.right_bumper) {
+                clawAngle.setPosition(0.2);
+            }
+            if (gamepad1.left_bumper) {
+                clawAngle.setPosition(0.25);
             }
 
             if (gamepad1.x) {
@@ -215,36 +276,20 @@ public class servoTest extends LinearOpMode {
                 leftX.setPosition(1);
                 rightX.setPosition(0);
             }
-            if (gamepad1.b) {
-                clawAngle.setPosition(0.7);
-            }
-
+            if (gamepad1.b) clawAngle.setPosition(0);
 
             if (gamepad1.dpad_up) {
-                rightClawPos.setPosition(0);
-                leftClawPos.setPosition(1);
+                rightClawPos.setPosition(0.2);
+                leftClawPos.setPosition(0.8);
             }
             if (gamepad1.dpad_down) {
                 rightClawPos.setPosition(1);
                 leftClawPos.setPosition(0);
             }
-            if (gamepad1.dpad_right) {
-                clawClamp.setPosition(1);
-            }
-            if (gamepad1.dpad_left) {
-                clawClamp.setPosition(0.75);
-            }
 
-            if (gamepad1.right_bumper) {
-                clawAngle.setPosition(1);
-            }
-            if (gamepad1.left_bumper) {
-                clawAngle.setPosition(0.1);
-            }
-            /**
              if(gamepad1.a){
-             rightClawPos.setPosition(0);
-             leftClawPos.setPosition(1);
+             rightClawPos.setPosition(0.2);
+             leftClawPos.setPosition(0.8);
 
              leftY.setTargetPosition(-1 * SPECIMEN_HEIGHT);
              rightY.setTargetPosition(SPECIMEN_HEIGHT);
@@ -263,7 +308,7 @@ public class servoTest extends LinearOpMode {
              leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
              rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-             readyForVertical = false;
+            /** readyForVertical = false;
              verticallyUp = true;
              if(verticallyUp){
              rightClawPos.setPosition(1);
@@ -286,10 +331,38 @@ public class servoTest extends LinearOpMode {
 
              leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
              rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-             }
-             }
              }*/
+             }
+             }
+            //MecanumDrive Code
+            drive = gamepad2.left_stick_y * 0.5 * preciseMovement;
+            turn = gamepad2.right_stick_x *-0.5 * preciseMovement;
+            strafe = gamepad2.left_stick_x *-0.5 * preciseMovement;
+
+            //strafe
+            fLeftPower = drive + turn + strafe;
+            fRightPower = drive - turn - strafe;
+            bLeftPower = drive + turn - strafe;
+            bRightPower = drive - turn + strafe;
+
+            double[] appliedPowers = scalePowers(fLeftPower, fRightPower, bLeftPower, bRightPower);
+
+            leftFront.setPower(appliedPowers[0]);
+            leftBack.setPower(appliedPowers[2]);
+            rightFront.setPower(appliedPowers[1]);
+            rightBack.setPower(appliedPowers[3]);
         }
+    }
+    public double[] scalePowers(double fLeftPower, double fRightPower, double bLeftPower, double bRightPower) {
+        double max = Math.max(Math.abs(fLeftPower), Math.max(Math.abs(fRightPower), Math.max(Math.abs(bLeftPower), Math.abs(bRightPower))));
+        if (max > 1) {
+            fLeftPower /= max;
+            fRightPower /= max;
+            bLeftPower /= max;
+            bRightPower /= max;
+        }
+
+        return new double[]{fLeftPower, fRightPower, bLeftPower, bRightPower};
     }
 }
 
