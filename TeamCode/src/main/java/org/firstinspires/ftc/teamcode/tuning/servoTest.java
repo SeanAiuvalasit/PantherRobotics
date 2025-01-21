@@ -55,20 +55,10 @@ public class servoTest extends LinearOpMode {
         leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Y: vertical positions
-        final int SPECIMEN_HEIGHT = 4300;
-        final int BUCKET_HEIGHT = 0;
+        final int SPECIMEN_HEIGHT = 1300;
+        final int BUCKET_HEIGHT = 4300;
         final int Y_HOME = 0;
-        double YSpeed = 0.7;
-        boolean atSpecimenPos = false;
-        boolean lastCycle = false;    // used with below to read button presses properly
-        boolean thisCycle = false;
-        boolean lastCycle2 = false;    // used with below to read button presses properly
-        boolean thisCycle2 = false;
-        boolean up = false;
-
-        // X: Servo stuff
-        double XTarget = 0.0;
-        boolean in = true;
+        final double Y_SLOW = 0.3;
 
         // A: Button
         boolean readyForVertical = false;
@@ -105,7 +95,7 @@ public class servoTest extends LinearOpMode {
                 preciseMovement = 1.0;
 
             /**
-             * Extend Horizontal Slides about 3/4th of the way
+             * Extend Horizontal Slides about the whole way
              * Turn arm into extended position - right above the blocks
              *
              * If Button A pressed again should go back to home position.
@@ -117,19 +107,18 @@ public class servoTest extends LinearOpMode {
 
                     rightClawPos.setPosition(0.3);   // rotation of claw
                     leftClawPos.setPosition(0.7);
-                    //clawClamp.wait(1000);
                     clawClamp.setPosition(0.75);     // picking up blocks
-                    clawAngle.setPosition(0.5); //
+                    clawAngle.setPosition(0.5);
                     clawWrist.setPosition(1);
 
                 if(true){
-                    leftY.setTargetPosition(0);
-                    rightY.setTargetPosition(0);
+                    leftY.setTargetPosition(Y_HOME);
+                    rightY.setTargetPosition(Y_HOME);
 
                     leftY.setTargetPositionTolerance(1);
-                    leftY.setPower(0.2);
+                    leftY.setPower(Y_SLOW);
                     rightY.setTargetPositionTolerance(1);
-                    rightY.setPower(0.2);
+                    rightY.setPower(Y_SLOW);
 
                     leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -137,7 +126,7 @@ public class servoTest extends LinearOpMode {
             }
 
             /**
-             *Closes the claw, rotates it to home position, and returns horizontal slides to home
+             * Closes the claw, rotates it to home position, and returns horizontal slides to home
              * Vertical slides go to 0
              */
             if (gamepad2.b) {
@@ -145,19 +134,47 @@ public class servoTest extends LinearOpMode {
                 rightClawPos.setPosition(1);
                 leftClawPos.setPosition(0);
 
-                    clawAngle.setPosition(0.4);
-                    leftX.setPosition(0);
-                    rightX.setPosition(1);
-                    clawWrist.setPosition(1);
+                clawAngle.setPosition(0.4);
+                leftX.setPosition(0);
+                rightX.setPosition(1);
+                clawWrist.setPosition(1);
 
                 if(true){
-                    leftY.setTargetPosition(0);
-                    rightY.setTargetPosition(0);
+                    leftY.setTargetPosition(Y_HOME);
+                    rightY.setTargetPosition(Y_HOME);
 
                     leftY.setTargetPositionTolerance(1);
-                    leftY.setPower(0.2);
+                    leftY.setPower(Y_SLOW);
                     rightY.setTargetPositionTolerance(1);
-                    rightY.setPower(0.2);
+                    rightY.setPower(Y_SLOW);
+
+                    leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                }
+            }
+
+            /**
+             * Closes the claw, rotates it to home position, and moves thw horizontal slides halfway
+             * Vertical slides go to 0
+             */
+            if (gamepad2.dpad_right) {
+                clawClamp.setPosition(1);
+                rightClawPos.setPosition(1);
+                leftClawPos.setPosition(0);
+
+                clawAngle.setPosition(0.4);
+                leftX.setPosition(0.5);
+                rightX.setPosition(0.5);
+                clawWrist.setPosition(1);
+
+                if(true){
+                    leftY.setTargetPosition(Y_HOME);
+                    rightY.setTargetPosition(Y_HOME);
+
+                    leftY.setTargetPositionTolerance(1);
+                    leftY.setPower(Y_SLOW);
+                    rightY.setTargetPositionTolerance(1);
+                    rightY.setPower(Y_SLOW);
 
                     leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -193,13 +210,13 @@ public class servoTest extends LinearOpMode {
                 rightClawPos.setPosition(0.25);
 
                 if(true){
-                    leftY.setTargetPosition(1300);
-                    rightY.setTargetPosition(-1300);
+                    leftY.setTargetPosition(SPECIMEN_HEIGHT);
+                    rightY.setTargetPosition(-1 * SPECIMEN_HEIGHT);
 
                     leftY.setTargetPositionTolerance(1);
-                    leftY.setPower(0.3);
+                    leftY.setPower(Y_SLOW);
                     rightY.setTargetPositionTolerance(1);
-                    rightY.setPower(0.3);
+                    rightY.setPower(Y_SLOW);
 
                     leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -211,30 +228,10 @@ public class servoTest extends LinearOpMode {
              * Vertical slides go down to 0
              */
             if(gamepad2.dpad_down){
-                /*
-                leftY.setTargetPosition(100);
-                rightY.setTargetPosition(100);
-
-                leftY.setTargetPositionTolerance(1);
-                leftY.setPower(1);
-                rightY.setTargetPositionTolerance(1);
-                rightY.setPower(1);
-
-                leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                leftY.setTargetPosition(0);
-                rightY.setTargetPosition(0);
-                leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                */
                 rightY.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
                 leftY.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
                 rightY.setPower(0);
                 leftY.setPower(0);
-
-
-                //rightY.set();
             }
 
             /**
@@ -242,16 +239,23 @@ public class servoTest extends LinearOpMode {
              */
             if (gamepad2.dpad_up) {
                 if(leftY.getCurrentPosition()<50 && rightY.getCurrentPosition()>-50) {
-                    leftY.setTargetPosition(SPECIMEN_HEIGHT);
-                    rightY.setTargetPosition(-1 * SPECIMEN_HEIGHT);
+                    leftY.setTargetPosition(BUCKET_HEIGHT);
+                    rightY.setTargetPosition(-1 * BUCKET_HEIGHT);
 
                     leftY.setTargetPositionTolerance(1);
-                    leftY.setPower(0.35);
+                    leftY.setPower(0.7);
                     rightY.setTargetPositionTolerance(1);
-                    rightY.setPower(0.35);
+                    rightY.setPower(0.7);
 
                     leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                    clawClamp.setPosition(1);
+                    rightClawPos.setPosition(1);
+                    leftClawPos.setPosition(0);
+
+                    clawAngle.setPosition(0.4);
+                    clawWrist.setPosition(1);
                 }
             }
 
@@ -287,53 +291,6 @@ public class servoTest extends LinearOpMode {
                 leftClawPos.setPosition(0);
             }
 
-             if(gamepad1.a){
-             rightClawPos.setPosition(0.2);
-             leftClawPos.setPosition(0.8);
-
-             leftY.setTargetPosition(-1 * SPECIMEN_HEIGHT);
-             rightY.setTargetPosition(SPECIMEN_HEIGHT);
-
-             leftY.setTargetPosition(0);
-             rightY.setTargetPosition(0);
-
-             leftY.setTargetPositionTolerance(1);
-             leftY.setPower(0.3);
-             rightY.setTargetPositionTolerance(1);
-             rightY.setPower(0.3);
-
-             readyForVertical = true;
-             if(readyForVertical){
-
-             leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-             rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            /** readyForVertical = false;
-             verticallyUp = true;
-             if(verticallyUp){
-             rightClawPos.setPosition(1);
-             leftClawPos.setPosition(0);
-
-             clawRotation.setPosition(1);
-             wait(500);
-             clawRotation.setPosition(0);
-
-             rightClawPos.setPosition(0);
-             leftClawPos.setPosition(1);
-
-             leftY.setTargetPosition(SPECIMEN_HEIGHT);
-             rightY.setTargetPosition(-1 * SPECIMEN_HEIGHT);
-
-             leftY.setTargetPositionTolerance(1);
-             leftY.setPower(0.2);
-             rightY.setTargetPositionTolerance(1);
-             rightY.setPower(0.2);
-
-             leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-             rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-             }*/
-             }
-             }
             //MecanumDrive Code
             drive = gamepad2.left_stick_y * 0.5 * preciseMovement;
             turn = gamepad2.right_stick_x *-0.5 * preciseMovement;
