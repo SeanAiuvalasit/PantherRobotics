@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "servoTest")
-public class servoTest extends LinearOpMode {
+public class servoTest extends LinearOpMode {          //104mm diameter    5281.1 ticks per revolutiona
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -100,13 +100,14 @@ public class servoTest extends LinearOpMode {
              *
              * If Button A pressed again should go back to home position.
              * Keeps repeating this pattern.
+             *
              */
             if (gamepad2.a) {
                 leftX.setPosition(1);
                 rightX.setPosition(0);
 
-                    rightClawPos.setPosition(0.3);   // rotation of claw
-                    leftClawPos.setPosition(0.7);
+                    rightClawPos.setPosition(0.33);   // rotation of claw (higher value means higher claw)
+                    leftClawPos.setPosition(0.67);
                     clawClamp.setPosition(0.75);     // picking up blocks
                     clawAngle.setPosition(0.5);
                     clawWrist.setPosition(1);
@@ -190,12 +191,16 @@ public class servoTest extends LinearOpMode {
                     rightClawPos.setPosition(0);
                     clawWrist.setPosition(1);
                     clawDown = true;
-                }else{
+                }
+                /*
+                else{
                     clawDown = false;
                     leftClawPos.setPosition(0.6);
                     rightClawPos.setPosition(0.4);
                     clawWrist.setPosition(1);
                 }
+
+                 */
             }
 
             /**
