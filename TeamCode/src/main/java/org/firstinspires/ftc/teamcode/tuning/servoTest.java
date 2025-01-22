@@ -58,7 +58,7 @@ public class servoTest extends LinearOpMode {          //104mm diameter    5281.
         final int SPECIMEN_HEIGHT = 1300;
         final int BUCKET_HEIGHT = 4300;
         final int Y_HOME = 0;
-        final double Y_SLOW = 0.3;
+        final double Y_SLOW = 0.25;
 
         // A: Button
         boolean readyForVertical = false;
@@ -186,12 +186,12 @@ public class servoTest extends LinearOpMode {          //104mm diameter    5281.
              * Makes the claw go down more to pick up blocks, and if pressed again would go back up
              */
             if (gamepad2.y) {
-                if(!clawDown){
+              //  if(!clawDown){
                     leftClawPos.setPosition(1);
                     rightClawPos.setPosition(0);
                     clawWrist.setPosition(1);
-                    clawDown = true;
-                }
+              //      clawDown = true;
+              //  }
                 /*
                 else{
                     clawDown = false;
@@ -207,13 +207,6 @@ public class servoTest extends LinearOpMode {          //104mm diameter    5281.
              * Brings horizontal slides out, rotates claw into position
              */
             if(gamepad2.x){
-                clawClamp.setPosition(1);
-                clawWrist.setPosition(0);
-                leftX.setPosition(0.5);
-                rightX.setPosition(0.5);
-                leftClawPos.setPosition(0.75);
-                rightClawPos.setPosition(0.25);
-
                 if(true){
                     leftY.setTargetPosition(SPECIMEN_HEIGHT);
                     rightY.setTargetPosition(-1 * SPECIMEN_HEIGHT);
@@ -226,6 +219,13 @@ public class servoTest extends LinearOpMode {          //104mm diameter    5281.
                     leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 }
+                clawClamp.setPosition(1);
+                clawWrist.setPosition(0);
+                leftX.setPosition(0.5);
+                rightX.setPosition(0.5);
+                leftClawPos.setPosition(0.75);
+                rightClawPos.setPosition(0.25);
+
                 clawAngle.setPosition(0.15);
             }
 
@@ -239,11 +239,19 @@ public class servoTest extends LinearOpMode {          //104mm diameter    5281.
                 leftY.setPower(0);
             }
 
+
+            if(gamepad2.dpad_left) {
+                leftY.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                rightY.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            }
             /**
              * Vertical slides go up to vertical height
              */
             if (gamepad2.dpad_up) {
-                if(leftY.getCurrentPosition()<50 && rightY.getCurrentPosition()>-50) {
+                leftY.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                rightY.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+               // if(leftY.getCurrentPosition()<50 && rightY.getCurrentPosition()>-50) {
                     leftY.setTargetPosition(BUCKET_HEIGHT);
                     rightY.setTargetPosition(-1 * BUCKET_HEIGHT);
 
@@ -261,7 +269,7 @@ public class servoTest extends LinearOpMode {          //104mm diameter    5281.
 
                     clawAngle.setPosition(0.4);
                     clawWrist.setPosition(1);
-                }
+               // }
             }
 
             if (gamepad1.dpad_right) {
