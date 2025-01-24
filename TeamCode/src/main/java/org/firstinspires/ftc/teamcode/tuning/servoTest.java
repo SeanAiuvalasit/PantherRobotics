@@ -81,14 +81,14 @@ public class servoTest extends LinearOpMode {          //104mm diameter    5281.
              * wrist
              */
             if(gamepad2.left_bumper){
-                    clawWrist.setPosition(0.65);
+                    clawWrist.setPosition(0.45);
             }
 
             /**
              * wrist
              */
             if(gamepad2.right_bumper){
-                    clawWrist.setPosition(1);
+                    clawWrist.setPosition(0.85);
             }
 
 
@@ -109,6 +109,7 @@ public class servoTest extends LinearOpMode {          //104mm diameter    5281.
              *
              */
             if (gamepad2.a) {
+
                 leftX.setPosition(1);
                 rightX.setPosition(0);
 
@@ -116,7 +117,7 @@ public class servoTest extends LinearOpMode {          //104mm diameter    5281.
                     leftClawPos.setPosition(0.6);
                   //  clawClamp.setPosition(0.75);     // picking up blocks
                     clawAngle.setPosition(0.5);
-                    clawWrist.setPosition(1);
+                    clawWrist.setPosition(0.65);
             }
 
             /**
@@ -131,7 +132,7 @@ public class servoTest extends LinearOpMode {          //104mm diameter    5281.
                 clawAngle.setPosition(0.35);
                 leftX.setPosition(0);
                 rightX.setPosition(1);
-                clawWrist.setPosition(1);
+                clawWrist.setPosition(0.65);
             }
 
             /**
@@ -146,7 +147,7 @@ public class servoTest extends LinearOpMode {          //104mm diameter    5281.
                 leftClawPos.setPosition(0.67);
                 //  clawClamp.setPosition(0.75);     // picking up blocks
                 clawAngle.setPosition(0.5);
-                clawWrist.setPosition(1);
+                clawWrist.setPosition(0.65);
             }
 
             /**
@@ -156,7 +157,7 @@ public class servoTest extends LinearOpMode {          //104mm diameter    5281.
               //  if(!clawDown){
                     leftClawPos.setPosition(1);
                     rightClawPos.setPosition(0);
-                    clawWrist.setPosition(1);
+                    //clawWrist.setPosition(1);
                     clawClamp.setPosition(0.75);
               //      clawDown = true;
               //  }
@@ -241,10 +242,10 @@ public class servoTest extends LinearOpMode {          //104mm diameter    5281.
             }
 
             if (gamepad1.left_bumper) {
-                clawClamp.setPosition(1);
+                clawClamp.setPosition(0.3);
             }
             if (gamepad1.right_bumper) {
-                clawClamp.setPosition(0.75);
+                clawClamp.setPosition(1);
             }/**
             if (gamepad1.right_bumper) {
                 clawAngle.setPosition(0.2);
