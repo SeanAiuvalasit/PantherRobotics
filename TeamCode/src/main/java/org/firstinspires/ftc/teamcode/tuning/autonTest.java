@@ -68,7 +68,7 @@ public class autonTest extends LinearOpMode {
         final int SPECIMEN_HEIGHT = 1300;
         final int BUCKET_HEIGHT = 4300;
         final int Y_HOME = 0;
-        final double Y_SLOW = 0.3;
+        final double Y_SLOW = 0.6;
 
         // A: Button
         boolean readyForVertical = false;
@@ -85,10 +85,9 @@ public class autonTest extends LinearOpMode {
 
 
         waitForStart();
-        while (opModeIsActive()) {
 
             double preciseMovement = 1.0;
-            double power = 0.2;
+            double power = 0.4;
 
             telemetry.addData("leftY pos: ", leftY.getCurrentPosition());
             telemetry.addData("rightY pos: ", rightY.getCurrentPosition());
@@ -148,13 +147,13 @@ public class autonTest extends LinearOpMode {
             leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             clawAngle.setPosition(0.15);
-            sleep(1500);
+            sleep(1300);
 
-
-            leftBack.setTargetPosition(run(50));
-            leftFront.setTargetPosition(run(50));
-            rightBack.setTargetPosition(run(50));
-            rightFront.setTargetPosition(run(50));
+            //going forward
+            leftBack.setTargetPosition(run(60));
+            leftFront.setTargetPosition(run(60));
+            rightBack.setTargetPosition(run(60));
+            rightFront.setTargetPosition(run(60));
             leftBack.setTargetPositionTolerance(1);
             leftFront.setTargetPositionTolerance(1);
             rightBack.setTargetPositionTolerance(1);
@@ -168,14 +167,15 @@ public class autonTest extends LinearOpMode {
             leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            sleep(30000);
-            /*
-            leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-            /*
+            sleep(2000);
+
+        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
             // hook
             leftBack.setTargetPosition(-1 * run(5));
             leftFront.setTargetPosition(-1 * run(5));
@@ -195,7 +195,9 @@ public class autonTest extends LinearOpMode {
             rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+
             //claw release
+        clawAngle.setPosition(0.5);
             clawClamp.setPosition(0.75);
 
             // back up
@@ -217,6 +219,7 @@ public class autonTest extends LinearOpMode {
             rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+            /*
             //wait?
 
             // arm down
@@ -340,7 +343,8 @@ public class autonTest extends LinearOpMode {
 
 
 
-          */}
+          */
+        while(!isStopRequested() && opModeIsActive());
     }
     public int run(double distance) {
         return (int) (-1 * distance / (Math.PI * diameter)*CPR);
