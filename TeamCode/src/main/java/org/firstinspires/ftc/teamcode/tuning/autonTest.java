@@ -18,8 +18,8 @@ public class autonTest extends LinearOpMode {
     //104mm diameter
     // 5281.1 CPR
     //robot full length ~45 cm, between wheels on side ~35 cm, between wheels on front ~34 cm
-    final double CPR = 5281.1;
-    final double diameter = 0.104;
+    final double CPR = 384.5;
+    final double diameter = 10.4;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -47,10 +47,10 @@ public class autonTest extends LinearOpMode {
         //Mecanum Drive Code
         double drive, turn, strafe;
         double fLeftPower, fRightPower, bLeftPower, bRightPower;
-        DcMotor leftFront = hardwareMap.get(DcMotor.class, "LF");
-        DcMotor rightFront = hardwareMap.get(DcMotor.class, "RF");
-        DcMotor leftBack = hardwareMap.get(DcMotor.class, "LB");
-        DcMotor rightBack = hardwareMap.get(DcMotor.class, "RB");
+        DcMotorEx leftFront = hardwareMap.get(DcMotorEx.class, "LF");
+        DcMotorEx rightFront = hardwareMap.get(DcMotorEx.class, "RF");
+        DcMotorEx leftBack = hardwareMap.get(DcMotorEx.class, "LB");
+        DcMotorEx rightBack = hardwareMap.get(DcMotorEx.class, "RB");
         rightBack.setDirection(DcMotor.Direction.REVERSE);
         rightFront.setDirection(DcMotor.Direction.REVERSE);
         leftBack.setDirection(DcMotor.Direction.FORWARD);
@@ -98,6 +98,7 @@ public class autonTest extends LinearOpMode {
             telemetry.addData("rightclawpos: ", rightClawPos.getPosition());
             telemetry.addData("clawclamp: ", clawClamp.getPosition());
             telemetry.addData("clawAngle: ", clawAngle.getPosition());
+            telemetry.addData("right back: ", rightBack.getCurrentPosition());
             telemetry.update();
 
             /**
@@ -149,19 +150,15 @@ public class autonTest extends LinearOpMode {
             clawAngle.setPosition(0.15);
             sleep(1500);
 
-            // TODO: wait?
-            leftBack.setPower(-1 * power);
-            leftFront.setPower(-1 * power);
-            rightBack.setPower(-1 * power);
-            rightFront.setPower(-1* power);
 
-
-            /*
-
-            leftBack.setTargetPosition(-1 * run(50));
-            leftFront.setTargetPosition(-1 * run(50));
+            leftBack.setTargetPosition(run(50));
+            leftFront.setTargetPosition(run(50));
             rightBack.setTargetPosition(run(50));
             rightFront.setTargetPosition(run(50));
+            leftBack.setTargetPositionTolerance(1);
+            leftFront.setTargetPositionTolerance(1);
+            rightBack.setTargetPositionTolerance(1);
+            rightFront.setTargetPositionTolerance(1);
 
             leftBack.setPower(power);
             leftFront.setPower(power);
@@ -171,6 +168,8 @@ public class autonTest extends LinearOpMode {
             leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            sleep(30000);
+            /*
             leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -344,7 +343,7 @@ public class autonTest extends LinearOpMode {
           */}
     }
     public int run(double distance) {
-        return (int) (distance * Math.PI * diameter / CPR);
+        return (int) (-1 * distance / (Math.PI * diameter)*CPR);
     }
 
     public int rotate(double degrees) {
