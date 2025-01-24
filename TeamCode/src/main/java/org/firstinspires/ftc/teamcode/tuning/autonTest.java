@@ -148,6 +148,7 @@ public class autonTest extends LinearOpMode {
             rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             clawAngle.setPosition(0.15);
             sleep(1500);
+
             // TODO: wait?
             leftBack.setPower(-1 * power);
             leftFront.setPower(-1 * power);
