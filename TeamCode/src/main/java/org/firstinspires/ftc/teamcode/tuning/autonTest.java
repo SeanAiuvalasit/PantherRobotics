@@ -197,7 +197,7 @@ public class autonTest extends LinearOpMode {
 
 
             //claw release
-        clawAngle.setPosition(0.5);
+            clawAngle.setPosition(0.5);
             clawClamp.setPosition(0.75);
 
             // back up
