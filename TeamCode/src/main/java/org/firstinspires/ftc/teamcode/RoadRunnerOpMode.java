@@ -170,19 +170,19 @@ public class RoadRunnerOpMode extends LinearOpMode {
         Claw claw = new Claw(hardwareMap);
 
         TrajectoryActionBuilder path1 = drive.actionBuilder(initialPose)
-                .splineTo(new Vector2d(9999,99999), Math.toRadians(90));
+                .splineTo(new Vector2d(), Math.toRadians(90));
         TrajectoryActionBuilder push = drive.actionBuilder(new Pose2d(-31.15354, 3, Math.toRadians(90)))
                 .splineTo(new Vector2d(-24,-36), Math.toRadians(180)) // intermediate
                 .splineTo(new Vector2d(-18,-48), Math.toRadians(180)) //  back of block 1
                 .splineTo(new Vector2d(-66,-48), Math.toRadians(180)) // push block 1
-                .splineTo(new Vector2d(99999, 99999), Math.toRadians(180)) // go to back of block 2
+                .splineTo(new Vector2d(), Math.toRadians(180)) // go to back of block 2
                 .splineTo(new Vector2d(-66, -48), Math.toRadians(180)) // push block 2
-                .splineTo(new Vector2d(99999,999999), Math.toRadians(180)) // go to back of block 3
+                .splineTo(new Vector2d(), Math.toRadians(180)) // go to back of block 3
                 .splineTo(new Vector2d(-66,-48), Math.toRadians(180)) // push block 3
-                .splineTo(new Vector2d(99999,99999), Math.toRadians(180)); // go to pickup point
+                .splineTo(new Vector2d(), Math.toRadians(180)); // go to pickup point
         TrajectoryActionBuilder pickup = drive.actionBuilder(new Pose2d(-31.15354, 3, Math.toRadians(90)))
-                .splineTo(new Vector2d(999999,9999), Math.toRadians(90)); // go to pickup point
-        TrajectoryActionBuilder dropoff =  drive.actionBuilder(new Pose2d(99999,99999, Math.toRadians(90)))
+                .splineTo(new Vector2d(), Math.toRadians(90)); // go to pickup point
+        TrajectoryActionBuilder dropoff =  drive.actionBuilder()
                 .splineTo(new Vector2d(-31.15354,3), Math.toRadians(90)); // go to dropoff point
 
         Actions.runBlocking(claw.closeClaw());
