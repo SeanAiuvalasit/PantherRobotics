@@ -25,24 +25,8 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 @Config
 @Autonomous(name = "RoadRunnerOpMode", group = "Autonomous")
 public class RoadRunnerOpMode extends LinearOpMode {
-
-    // Y: vertical positions
     final int SPECIMEN_HEIGHT = 1300;
-    final int BUCKET_HEIGHT = 4300;
-    final int Y_HOME = 0;
     final double Y_SLOW = 0.6;
-
-    // A: Button
-    boolean readyForVertical = false;
-    boolean verticallyUp = false;
-
-    //Y: Button
-    double clawClampTarget = 0.0;
-    double clawTarget = 0.0;
-    boolean clawOpen = true;
-
-    //
-    boolean clawDown = false;
 
     public class SlidesY {
         private DcMotorEx leftY;
@@ -76,78 +60,58 @@ public class RoadRunnerOpMode extends LinearOpMode {
         public Action armUp() {
             return new armUp();
         }
+        public class armDown implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                leftY.setTargetPosition(0);
+                rightY.setTargetPosition(0);
+                leftY.setTargetPositionTolerance(1);
+                leftY.setPower(Y_SLOW);
+                rightY.setTargetPositionTolerance(1);
+                rightY.setPower(Y_SLOW);
+                leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                return false;
+            }
+        }
+        public Action armDown() {
+            return new armDown();
+        }
+
     }
-    public class SlidesX {
+    public class Claw {
         private Servo leftX;
         private Servo rightX;
-
-        public SlidesX(HardwareMap hardwareMap) {
-            leftX = hardwareMap.get(Servo.class, "leftX");
-            rightX = hardwareMap.get(Servo.class, "rightX");
-        }
-
-        public class XOut implements Action {
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                leftX.setPosition(0.8);
-                rightX.setPosition(0.2);
-                return false;
-            }
-        }
-        public Action XOut() {
-            return new XOut();
-        }
-        public class XIn implements Action {
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                leftX.setPosition(0);
-                rightX.setPosition(0);
-                return false;
-            }
-        }
-        public Action XIn() {
-            return new XIn();
-        }
-    }
-    public class clawPos {
         private Servo leftClawPos;
         private Servo rightClawPos;
-        public clawPos (HardwareMap hardwareMap){
+        private Servo clawWrist;
+        private Servo clawClamp;
+        private Servo clawAngle;
+        public Claw(HardwareMap hardwareMap) {
+            leftX = hardwareMap.get(Servo.class, "leftX");
+            rightX = hardwareMap.get(Servo.class, "rightX");
             leftClawPos = hardwareMap.get(Servo.class, "leftClawPos");
             rightClawPos = hardwareMap.get(Servo.class, "rightClawPos");
+            clawWrist = hardwareMap.get(Servo.class, "clawWrist");
+            clawClamp = hardwareMap.get(Servo.class, "clawClamp");
+            clawAngle = hardwareMap.get(Servo.class, "clawAngle");
         }
-        public class clawPosOut implements Action {
+        public class home implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                leftClawPos.setPosition(0.75);
-                rightClawPos.setPosition(0.25);
+                clawClamp.setPosition(1);
+                rightClawPos.setPosition(1);
+                leftClawPos.setPosition(0);
+
+                clawAngle.setPosition(0.35);
+                leftX.setPosition(0);
+                rightX.setPosition(1);
+                clawWrist.setPosition(0.65);
                 return false;
             }
         }
-        public Action clawPosOut() {
-            return new clawPosOut();
-        }
-    }
-    public class ClawWrist {
-        private Servo clawWrist;
-        public ClawWrist (HardwareMap hardwareMap){
-            clawWrist = hardwareMap.get(Servo.class, "clawWrist");
-        }
-        public class straight implements Action {
-            @Override
-            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                clawWrist.setPosition(0);
-                return false;
-            }
-        }
-        public Action straight() {
-            return new straight();
-        }
-    }
-    public class ClawClamp {
-        private Servo clawClamp;
-        public ClawClamp (HardwareMap hardwareMap){
-            Servo clawClamp = hardwareMap.get(Servo.class, "clawClamp");
+        public Action home() {
+            return new home();
         }
         public class openClaw implements Action {
             @Override
@@ -169,29 +133,59 @@ public class RoadRunnerOpMode extends LinearOpMode {
         public Action closeClaw() {
             return new closeClaw();
         }
-    }
-    public class ClawAngle {
-        private Servo clawAngle;
-        public ClawAngle (HardwareMap hardwareMap){
-            clawAngle = hardwareMap.get(Servo.class, "clawAngle");
+        public class hook implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                clawAngle.setPosition(0.5);
+                clawClamp.setPosition(0.75);
+                return false;
+            }
+        }
+        public Action hook() {
+            return new hook();
+        }
+        public class goToHook implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                clawClamp.setPosition(1);
+                clawWrist.setPosition(0);
+                leftX.setPosition(0.5);
+                rightX.setPosition(0.5);
+                leftClawPos.setPosition(0.75);
+                rightClawPos.setPosition(0.25);
+                clawAngle.setPosition(0.15);
+                return false;
+            }
+        }
+        public Action goToHook() {
+            return new goToHook();
         }
     }
     @Override
     public void runOpMode() throws InterruptedException {
-        Pose2d initialPose = new Pose2d(11.8, 61.7, Math.toRadians(90));
+        Pose2d initialPose = new Pose2d(-59.5, 3, Math.toRadians(90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
-        ClawClamp clawClamp = new ClawClamp(hardwareMap);
-        ClawWrist clawWrist = new ClawWrist(hardwareMap);
-        ClawAngle clawAngle = new ClawAngle(hardwareMap);
-        SlidesX slidesX = new SlidesX(hardwareMap);
         SlidesY slidesY = new SlidesY(hardwareMap);
+        Claw claw = new Claw(hardwareMap);
 
-        TrajectoryActionBuilder tab1 = drive.actionBuilder(initialPose);
-        Action trajectoryActionCloseOut = tab1.endTrajectory().fresh()
-                .build();
+        TrajectoryActionBuilder path1 = drive.actionBuilder(initialPose)
+                .splineTo(new Vector2d(), Math.toRadians(90));
+        TrajectoryActionBuilder push = drive.actionBuilder(new Pose2d(-31.15354, 3, Math.toRadians(90)))
+                .splineTo(new Vector2d(-24,-36), Math.toRadians(180)) // intermediate
+                .splineTo(new Vector2d(-18,-48), Math.toRadians(180)) //  back of block 1
+                .splineTo(new Vector2d(-66,-48), Math.toRadians(180)) // push block 1
+                .splineTo(new Vector2d(), Math.toRadians(180)) // go to back of block 2
+                .splineTo(new Vector2d(-66, -48), Math.toRadians(180)) // push block 2
+                .splineTo(new Vector2d(), Math.toRadians(180)) // go to back of block 3
+                .splineTo(new Vector2d(-66,-48), Math.toRadians(180)) // push block 3
+                .splineTo(new Vector2d(), Math.toRadians(180)); // go to pickup point
+        TrajectoryActionBuilder pickup = drive.actionBuilder(new Pose2d(-31.15354, 3, Math.toRadians(90)))
+                .splineTo(new Vector2d(), Math.toRadians(90)); // go to pickup point
+        TrajectoryActionBuilder dropoff =  drive.actionBuilder()
+                .splineTo(new Vector2d(-31.15354,3), Math.toRadians(90)); // go to dropoff point
 
-        Actions.runBlocking(clawClamp.closeClaw());
+        Actions.runBlocking(claw.closeClaw());
 
         waitForStart();
 
@@ -199,14 +193,43 @@ public class RoadRunnerOpMode extends LinearOpMode {
 
         Actions.runBlocking(
                 new SequentialAction(
-                        clawClamp.closeClaw(),
-                        clawWrist.straight(),
-                        clawPos.clawPosOut();
-                        slidesY.armUp();
-                        clawClamp
-
-                        tab1.build(),
-                        trajectoryActionCloseOut
+                        new ParallelAction(
+                                claw.closeClaw(),
+                                path1.build(),
+                                slidesY.armUp(),
+                                claw.goToHook(),
+                                path1.endTrajectory().fresh().build()
+                        ),
+                        claw.hook(),
+                        claw.openClaw(),
+                        new ParallelAction(
+                                push.build(),
+                                slidesY.armDown(),
+                                claw.home(),
+                                push.endTrajectory().fresh().build()
+                        ),
+                        claw.closeClaw(),
+                        new ParallelAction(
+                                dropoff.build(),
+                                claw.goToHook(),
+                                slidesY.armUp(),
+                                dropoff.endTrajectory().fresh().build()
+                        ),
+                        claw.hook(),
+                        claw.openClaw(),
+                        new ParallelAction(
+                                pickup.build(),
+                                claw.home(),
+                                slidesY.armDown(),
+                                pickup.endTrajectory().fresh().build()
+                        ),
+                        claw.closeClaw(),
+                        new ParallelAction(
+                                dropoff.build(),
+                                claw.goToHook(),
+                                slidesY.armUp(),
+                                dropoff.endTrajectory().fresh().build()
+                        )
                 )
         );
     }
