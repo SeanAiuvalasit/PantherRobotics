@@ -163,15 +163,16 @@ public class RoadRunnerOpMode extends LinearOpMode {
     }
     @Override
     public void runOpMode() throws InterruptedException {
-        Pose2d initialPose = new Pose2d(-59.5, 3, Math.toRadians(90));
+        Pose2d initialPose = new Pose2d(-54.5, 3, Math.toRadians(90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
         SlidesY slidesY = new SlidesY(hardwareMap);
         Claw claw = new Claw(hardwareMap);
 
+        /*
         TrajectoryActionBuilder path1 = drive.actionBuilder(initialPose)
-                .splineTo(new Vector2d(), Math.toRadians(90));
-        TrajectoryActionBuilder push = drive.actionBuilder(new Pose2d(-31.15354, 3, Math.toRadians(90)))
+                .splineTo(new Vector2d(-31.15354,0), Math.toRadians(0));
+        TrajectoryActionBuilder push = drive.actionBuilder(new Pose2d(-31.15354, 0, Math.toRadians(0)))
                 .splineTo(new Vector2d(-24,-36), Math.toRadians(180)) // intermediate
                 .splineTo(new Vector2d(-18,-48), Math.toRadians(180)) //  back of block 1
                 .splineTo(new Vector2d(-66,-48), Math.toRadians(180)) // push block 1
@@ -181,9 +182,10 @@ public class RoadRunnerOpMode extends LinearOpMode {
                 .splineTo(new Vector2d(-66,-48), Math.toRadians(180)) // push block 3
                 .splineTo(new Vector2d(), Math.toRadians(180)); // go to pickup point
         TrajectoryActionBuilder pickup = drive.actionBuilder(new Pose2d(-31.15354, 3, Math.toRadians(90)))
-                .splineTo(new Vector2d(), Math.toRadians(90)); // go to pickup point
+                .splineTo(new Vector2d(), Math.toRadians(0)); // go to pickup point
         TrajectoryActionBuilder dropoff =  drive.actionBuilder()
-                .splineTo(new Vector2d(-31.15354,3), Math.toRadians(90)); // go to dropoff point
+                .splineTo(new Vector2d(-31.15354,3), Math.toRadians(90)); // go to dro0poff point
+         */
 
         Actions.runBlocking(claw.closeClaw());
 
@@ -192,6 +194,10 @@ public class RoadRunnerOpMode extends LinearOpMode {
         if (isStopRequested()) return;
 
         Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(0,0,Math.toRadians(0)))
+                        .lineToX(5)
+                        .build()
+                /*
                 new SequentialAction(
                         new ParallelAction(
                                 claw.closeClaw(),
@@ -231,6 +237,8 @@ public class RoadRunnerOpMode extends LinearOpMode {
                                 dropoff.endTrajectory().fresh().build()
                         )
                 )
+
+                 */
         );
     }
 }
