@@ -163,7 +163,7 @@ public class RoadRunnerOpMode extends LinearOpMode {
     }
     @Override
     public void runOpMode() throws InterruptedException {
-        Pose2d initialPose = new Pose2d(-54.5, 3, Math.toRadians(90));
+        Pose2d initialPose = new Pose2d(0, 0, Math.toRadians(0));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
         SlidesY slidesY = new SlidesY(hardwareMap);
@@ -195,7 +195,7 @@ public class RoadRunnerOpMode extends LinearOpMode {
 
         Actions.runBlocking(
                 drive.actionBuilder(new Pose2d(0,0,Math.toRadians(0)))
-                        .lineToX(5)
+                        .splineTo(new Vector2d(3,3), Math.toRadians(90))
                         .build()
                 /*
                 new SequentialAction(
