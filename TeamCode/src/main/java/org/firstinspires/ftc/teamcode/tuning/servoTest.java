@@ -88,7 +88,7 @@ public class servoTest extends LinearOpMode {          //104mm diameter    5281.
              * wrist
              */
             if(gamepad2.right_bumper){
-                    clawWrist.setPosition(0.85);
+                    clawWrist.setPosition(1);
             }
 
 
@@ -181,9 +181,9 @@ public class servoTest extends LinearOpMode {          //104mm diameter    5281.
                     rightY.setTargetPosition(-1 * SPECIMEN_HEIGHT);
 
                     leftY.setTargetPositionTolerance(1);
-                    leftY.setPower(Y_SLOW);
+                    leftY.setPower(0.5);
                     rightY.setTargetPositionTolerance(1);
-                    rightY.setPower(Y_SLOW);
+                    rightY.setPower(0.5);
 
                     leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -237,15 +237,15 @@ public class servoTest extends LinearOpMode {          //104mm diameter    5281.
                     leftClawPos.setPosition(0);
 
                     clawAngle.setPosition(0.4);
-                    clawWrist.setPosition(1);
+                    clawWrist.setPosition(0.65);
                // }
             }
 
             if (gamepad1.left_bumper) {
-                clawClamp.setPosition(0.3);
+                clawClamp.setPosition(1);
             }
             if (gamepad1.right_bumper) {
-                clawClamp.setPosition(1);
+                clawClamp.setPosition(0.75);
             }/**
             if (gamepad1.right_bumper) {
                 clawAngle.setPosition(0.2);
@@ -274,9 +274,9 @@ public class servoTest extends LinearOpMode {          //104mm diameter    5281.
             }*/
 
             //MecanumDrive Code
-            drive = gamepad1.left_stick_y * 0.7 * preciseMovement;
-            turn = gamepad1.right_stick_x *-0.7 * preciseMovement;
-            strafe = gamepad1.left_stick_x *-0.7 * preciseMovement;
+            drive = gamepad1.left_stick_y * 0.5 * preciseMovement;
+            turn = gamepad1.right_stick_x *-0.5 * preciseMovement;
+            strafe = gamepad1.left_stick_x *-0.5 * preciseMovement;
 
             //strafe
             fLeftPower = drive + turn + strafe;
