@@ -118,10 +118,10 @@ public class autonTest extends LinearOpMode {
         /**
          * The robot moves forward a specified amount of centimeters
          */
-        leftBack.setTargetPosition(run(72));
-            leftFront.setTargetPosition(run(72));
-            rightBack.setTargetPosition(run(72));
-            rightFront.setTargetPosition(run(72));
+        leftBack.setTargetPosition(run(68));
+            leftFront.setTargetPosition(run(68));
+            rightBack.setTargetPosition(run(68));
+            rightFront.setTargetPosition(run(68));
             leftBack.setTargetPositionTolerance(1);
             leftFront.setTargetPositionTolerance(1);
             rightBack.setTargetPositionTolerance(1);
@@ -136,34 +136,13 @@ public class autonTest extends LinearOpMode {
             rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            sleep(1700);
+            sleep(1500);
 
         leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        /**
-
-
-        leftBack.setTargetPosition(-1 * run(5));
-            leftFront.setTargetPosition(-1 * run(5));
-            rightBack.setTargetPosition(run(5));
-            rightFront.setTargetPosition(run(5));
-
-            leftBack.setPower(power);
-            leftFront.setPower(power);
-            rightBack.setPower(power);
-            rightFront.setPower(power);
-            leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-*/
 
         /**
          * claw goes back
@@ -201,10 +180,10 @@ public class autonTest extends LinearOpMode {
         /**
          * Strafes to the right
          */
-        leftBack.setTargetPosition(run(-80));
-        leftFront.setTargetPosition(run(80));
-        rightBack.setTargetPosition(run(80));
-        rightFront.setTargetPosition(run(-80));
+        leftBack.setTargetPosition(run(-74));
+        leftFront.setTargetPosition(run(74));
+        rightBack.setTargetPosition(run(74));
+        rightFront.setTargetPosition(run(-74));
         leftBack.setTargetPositionTolerance(1);
         leftFront.setTargetPositionTolerance(1);
         rightBack.setTargetPositionTolerance(1);
@@ -219,7 +198,7 @@ public class autonTest extends LinearOpMode {
         rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        sleep(1700);
+        sleep(1800);
 
         leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -229,10 +208,10 @@ public class autonTest extends LinearOpMode {
         /**
          * The robot moves forward a specified amount of centimeters FOR FIRST BLOCK
          */
-        leftBack.setTargetPosition(run(65));
-        leftFront.setTargetPosition(run(65));
-        rightBack.setTargetPosition(run(65));
-        rightFront.setTargetPosition(run(65));
+        leftBack.setTargetPosition(run(55));
+        leftFront.setTargetPosition(run(55));
+        rightBack.setTargetPosition(run(55));
+        rightFront.setTargetPosition(run(55));
         leftBack.setTargetPositionTolerance(1);
         leftFront.setTargetPositionTolerance(1);
         rightBack.setTargetPositionTolerance(1);
@@ -257,25 +236,25 @@ public class autonTest extends LinearOpMode {
         /**
          * Strafes to the right FOR FIRST BLOCK
          */
-        leftBack.setTargetPosition(run(-25));
-        leftFront.setTargetPosition(run(25));
-        rightBack.setTargetPosition(run(25));
-        rightFront.setTargetPosition(run(-25));
+        leftBack.setTargetPosition(run(-18));
+        leftFront.setTargetPosition(run(18));
+        rightBack.setTargetPosition(run(18));
+        rightFront.setTargetPosition(run(-18));
         leftBack.setTargetPositionTolerance(1);
         leftFront.setTargetPositionTolerance(1);
         rightBack.setTargetPositionTolerance(1);
         rightFront.setTargetPositionTolerance(1);
 
-        leftBack.setPower(slowSpeed);
-        leftFront.setPower(slowSpeed);
-        rightBack.setPower(slowSpeed);
-        rightFront.setPower(slowSpeed);
+        leftBack.setPower(slowSpeed/2);
+        leftFront.setPower(slowSpeed/2);
+        rightBack.setPower(slowSpeed/2);
+        rightFront.setPower(slowSpeed/2);
         leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        sleep(600);
+        sleep(1000);
 
         leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -294,16 +273,16 @@ public class autonTest extends LinearOpMode {
         rightBack.setTargetPositionTolerance(1);
         rightFront.setTargetPositionTolerance(1);
 
-        leftBack.setPower(fastSpeed);
-        leftFront.setPower(fastSpeed);
-        rightBack.setPower(fastSpeed);
-        rightFront.setPower(fastSpeed);
+        leftBack.setPower(fastSpeed - 0.1);
+        leftFront.setPower(fastSpeed - 0.1);
+        rightBack.setPower(fastSpeed - 0.1);
+        rightFront.setPower(fastSpeed - 0.1);
         leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        sleep(1700);
+        sleep(2000);
 
         leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -314,10 +293,10 @@ public class autonTest extends LinearOpMode {
         /**
          * The robot moves forward a specified amount of centimeters SECOND BLOCK
          */
-        leftBack.setTargetPosition(run(95));
-        leftFront.setTargetPosition(run(95));
-        rightBack.setTargetPosition(run(95));
-        rightFront.setTargetPosition(run(95));
+        leftBack.setTargetPosition(run(85));
+        leftFront.setTargetPosition(run(85));
+        rightBack.setTargetPosition(run(85));
+        rightFront.setTargetPosition(run(85));
         leftBack.setTargetPositionTolerance(1);
         leftFront.setTargetPositionTolerance(1);
         rightBack.setTargetPositionTolerance(1);
@@ -342,10 +321,10 @@ public class autonTest extends LinearOpMode {
         /**
          * Strafes to the right FOR SECOND BLOCK
          */
-        leftBack.setTargetPosition(run(-25));
-        leftFront.setTargetPosition(run(25));
-        rightBack.setTargetPosition(run(25));
-        rightFront.setTargetPosition(run(-25));
+        leftBack.setTargetPosition(run(-18));
+        leftFront.setTargetPosition(run(18));
+        rightBack.setTargetPosition(run(18));
+        rightFront.setTargetPosition(run(-18));
         leftBack.setTargetPositionTolerance(1);
         leftFront.setTargetPositionTolerance(1);
         rightBack.setTargetPositionTolerance(1);
@@ -360,7 +339,7 @@ public class autonTest extends LinearOpMode {
         rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        sleep(700);
+        sleep(800);
 
         leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -370,10 +349,10 @@ public class autonTest extends LinearOpMode {
         /**
          * The robot moves BACKWARDS specified amount of centimeters FOR THE SECOND BLOCK
          */
-        leftBack.setTargetPosition(run(-95));
-        leftFront.setTargetPosition(run(-95));
-        rightBack.setTargetPosition(run(-95));
-        rightFront.setTargetPosition(run(-95));
+        leftBack.setTargetPosition(run(-80));
+        leftFront.setTargetPosition(run(-80));
+        rightBack.setTargetPosition(run(-80));
+        rightFront.setTargetPosition(run(-80));
         leftBack.setTargetPositionTolerance(1);
         leftFront.setTargetPositionTolerance(1);
         rightBack.setTargetPositionTolerance(1);
@@ -388,12 +367,201 @@ public class autonTest extends LinearOpMode {
         rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        sleep(1700);
+        sleep(3000);
 
         leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        /**
+         * Sets claw to home values, goes back slowly
+         */
+        clawClamp.setPosition(0.75);
+        rightClawPos.setPosition(1);
+        leftClawPos.setPosition(0);
+
+        clawAngle.setPosition(0.35);
+        leftX.setPosition(0);
+        rightX.setPosition(1);
+        clawWrist.setPosition(0.65);
+
+        /**
+         * The robot moves BACKWARDS slowly to pick up block off wall
+         */
+        leftBack.setTargetPosition(run(-40));
+        leftFront.setTargetPosition(run(-40));
+        rightBack.setTargetPosition(run(-40));
+        rightFront.setTargetPosition(run(-40));
+        leftBack.setTargetPositionTolerance(1);
+        leftFront.setTargetPositionTolerance(1);
+        rightBack.setTargetPositionTolerance(1);
+        rightFront.setTargetPositionTolerance(1);
+
+        leftBack.setPower(0.1);
+        leftFront.setPower(0.1);
+        rightBack.setPower(0.1);
+        rightFront.setPower(0.1);
+        leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        sleep(2000);
+
+        //claw clamp
+        clawClamp.setPosition(1.0);
+
+        /**
+         * goes upo to specimen height
+         */
+        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        leftY.setTargetPosition(SPECIMEN_HEIGHT);
+        rightY.setTargetPosition(-1 * SPECIMEN_HEIGHT);
+        leftY.setTargetPositionTolerance(1);
+        leftY.setPower(0.6);
+        rightY.setTargetPositionTolerance(1);
+        rightY.setPower(0.6);
+        leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        sleep(2000);
+
+        /**
+         * The robot moves FOWRARD fastly to get away from the wall
+         */
+        leftBack.setTargetPosition(run(10));
+        leftFront.setTargetPosition(run(10));
+        rightBack.setTargetPosition(run(10));
+        rightFront.setTargetPosition(run(10));
+        leftBack.setTargetPositionTolerance(1);
+        leftFront.setTargetPositionTolerance(1);
+        rightBack.setTargetPositionTolerance(1);
+        rightFront.setTargetPositionTolerance(1);
+
+        leftBack.setPower(0.6);
+        leftFront.setPower(0.6);
+        rightBack.setPower(0.6);
+        rightFront.setPower(0.6);
+        leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        sleep(400);
+
+        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        /**
+         * The robot goes left to line up with bar
+         */
+        leftBack.setTargetPosition(run(90));
+        leftFront.setTargetPosition(run(-90));
+        rightBack.setTargetPosition(run(-90));
+        rightFront.setTargetPosition(run(90));
+        leftBack.setTargetPositionTolerance(1);
+        leftFront.setTargetPositionTolerance(1);
+        rightBack.setTargetPositionTolerance(1);
+        rightFront.setTargetPositionTolerance(1);
+
+        leftBack.setPower(0.6);
+        leftFront.setPower(0.6);
+        rightBack.setPower(0.6);
+        rightFront.setPower(0.6);
+        leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        sleep(2000);
+
+        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        clawClamp.setPosition(1);
+        clawWrist.setPosition(0);
+        leftX.setPosition(0.8);
+        rightX.setPosition(0.2);
+        leftClawPos.setPosition(0.75);
+        rightClawPos.setPosition(0.25);
+
+        clawAngle.setPosition(0.15);
+
+        sleep(1000);
+
+        /**
+         * The robot moves forward a specified amount of centimeters
+         */
+        leftBack.setTargetPosition(run(60));
+        leftFront.setTargetPosition(run(60));
+        rightBack.setTargetPosition(run(60));
+        rightFront.setTargetPosition(run(60));
+        leftBack.setTargetPositionTolerance(1);
+        leftFront.setTargetPositionTolerance(1);
+        rightBack.setTargetPositionTolerance(1);
+        rightFront.setTargetPositionTolerance(1);
+
+        leftBack.setPower(fastSpeed/2);
+        leftFront.setPower(fastSpeed/2);
+        rightBack.setPower(fastSpeed/2);
+        rightFront.setPower(fastSpeed/2);
+        leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        sleep(1500);
+
+        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
+        /**
+         * claw goes back
+         */
+        telemetry.addData("should come back      ",rightBack.getCurrentPosition());
+        clawAngle.setPosition(0.5);
+        clawClamp.setPosition(0.75);
+
+        sleep(200);
+
+        /**
+         * back to home position (b button code)
+         */
+        clawClamp.setPosition(1);
+
+        clawAngle.setPosition(0.35);
+        leftX.setPosition(0);
+        rightX.setPosition(1);
+        clawWrist.setPosition(0.65);
+
+        sleep(1000);
+
+        /**
+         * y vertical back home & left and right claw pos back to home (button b code)
+         */
+        rightClawPos.setPosition(1);
+        leftClawPos.setPosition(0);
+        rightY.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        leftY.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        rightY.setPower(0);
+        leftY.setPower(0);
+
+        sleep(200);
+
+
+
 
         while(!isStopRequested() && opModeIsActive());
     }

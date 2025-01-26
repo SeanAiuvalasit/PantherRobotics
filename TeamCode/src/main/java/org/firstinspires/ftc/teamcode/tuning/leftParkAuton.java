@@ -9,11 +9,11 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
-@Autonomous(name = "leftAuton")
+@Autonomous(name = "left")
 
 //104mm diameter    5281.1 ticks per revolutiona
 
-public class leftAuton extends LinearOpMode {
+public class leftParkAuton extends LinearOpMode {
 
     //104mm diameter
     // 5281.1 CPR
@@ -98,6 +98,7 @@ public class leftAuton extends LinearOpMode {
          */
         telemetry.addData("HighBar1      ",rightBack.getCurrentPosition());
         telemetry.update();
+        sleep(5000);
         clawClamp.setPosition(1);
         clawWrist.setPosition(0);
         leftX.setPosition(0.5);
@@ -113,24 +114,24 @@ public class leftAuton extends LinearOpMode {
         leftY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightY.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         clawAngle.setPosition(0.15);
-        sleep(1000);
+        sleep(700);
 
         /**
          * The robot moves forward a specified amount of centimeters
          */
-        leftBack.setTargetPosition(run(72));
-        leftFront.setTargetPosition(run(72));
-        rightBack.setTargetPosition(run(72));
-        rightFront.setTargetPosition(run(72));
+        leftBack.setTargetPosition(run(68));
+        leftFront.setTargetPosition(run(68));
+        rightBack.setTargetPosition(run(68));
+        rightFront.setTargetPosition(run(68));
         leftBack.setTargetPositionTolerance(1);
         leftFront.setTargetPositionTolerance(1);
         rightBack.setTargetPositionTolerance(1);
         rightFront.setTargetPositionTolerance(1);
 
-        leftBack.setPower(fastSpeed+0.1);
-        leftFront.setPower(fastSpeed+0.1);
-        rightBack.setPower(fastSpeed+0.1);
-        rightFront.setPower(fastSpeed+0.1);
+        leftBack.setPower(fastSpeed/2);
+        leftFront.setPower(fastSpeed/2);
+        rightBack.setPower(fastSpeed/2);
+        rightFront.setPower(fastSpeed/2);
         leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -175,15 +176,15 @@ public class leftAuton extends LinearOpMode {
         rightY.setPower(0);
         leftY.setPower(0);
 
-        sleep(2000);
+        sleep(200);
 
         /**
          * back up to park
-
-        leftBack.setTargetPosition(run(30));
-        leftFront.setTargetPosition(run(-30));
-        rightBack.setTargetPosition(run(-30));
-        rightFront.setTargetPosition(run(30));
+         */
+        leftBack.setTargetPosition(run(-68));
+        leftFront.setTargetPosition(run(-68));
+        rightBack.setTargetPosition(run(-68));
+        rightFront.setTargetPosition(run(-68));
         leftBack.setTargetPositionTolerance(1);
         leftFront.setTargetPositionTolerance(1);
         rightBack.setTargetPositionTolerance(1);
@@ -204,10 +205,10 @@ public class leftAuton extends LinearOpMode {
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-*/
+
         /**
          * go left to park
-
+         */
         leftBack.setTargetPosition(run(68));
         leftFront.setTargetPosition(run(-68));
         rightBack.setTargetPosition(run(-68));
@@ -232,7 +233,7 @@ public class leftAuton extends LinearOpMode {
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-*/
+
         while(!isStopRequested() && opModeIsActive());
     }
     public int run(double distance) {

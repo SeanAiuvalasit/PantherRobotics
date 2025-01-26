@@ -22,22 +22,22 @@ public class MeepMeepTesting {
         Pose2d initialPose = new Pose2d(0,63.25, toRadians(270));
 
         myBot.runAction(myBot.getDrive().actionBuilder(initialPose)
-                .splineTo(new Vector2d(0, 34.90354), toRadians(90))
-                .strafeTo(new Vector2d(-34,32))
+                .splineTo(new Vector2d(0, 34.90354), toRadians(90))// path 1
+                .strafeTo(new Vector2d(-34,32)) // to block 1
 
                 /*
-                .splineTo(new Vector2d(-43,12), toRadians(90)) // intermediate //  back of block 1
-                .strafeTo(new Vector2d(-43,12))
-                .strafeTo(new Vector2d(-57,12))
-                .strafeTo(new Vector2d(-57,67))
-                .strafeTo(new Vector2d(-62,12))
-                .strafeTo(new Vector2d(-62,67))
-                .strafeTo(new Vector2d(0,65))
+                .splineTo(new Vector2d(-43,12), toRadians(90)) //behind block 1
+                .strafeTo(new Vector2d(-43,67)) // push to obzone
+                .strafeTo(new Vector2d(-57,12)) // behind block 2
+                .strafeTo(new Vector2d(-57,67)) // push to obzone
+                .strafeTo(new Vector2d(-62,12)) // behind block 3
+                .strafeTo(new Vector2d(-62,67)) // push to obzone
+                .strafeTo(new Vector2d(0,65)) // go to spot to grab specimen
 
-                .splineTo(new Vector2d(0, 34.90354), toRadians(270))
-                .splineTo(new Vector2d(-42, 65), toRadians(90))
-                .splineTo(new Vector2d(0, 34.90354), toRadians(270))
-                .splineTo(new Vector2d(-42, 65), toRadians(90))
+                .splineTo(new Vector2d(0, 34.90354), toRadians(270)) // go to hook
+                .splineTo(new Vector2d(-42, 65), toRadians(90)) // pick up new specimen
+                .splineTo(new Vector2d(0, 34.90354), toRadians(270)) // go to hook
+                .splineTo(new Vector2d(-42, 65), toRadians(90)) // etc.
                 .splineTo(new Vector2d(0, 34.90354), toRadians(270))
                 .splineTo(new Vector2d(-42, 65), toRadians(90))
                  */

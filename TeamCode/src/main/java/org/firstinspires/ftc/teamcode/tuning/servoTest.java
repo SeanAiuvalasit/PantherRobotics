@@ -55,7 +55,7 @@ public class servoTest extends LinearOpMode {          //104mm diameter    5281.
         leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Y: vertical positions
-        final int SPECIMEN_HEIGHT = 1300;
+        final int SPECIMEN_HEIGHT = 1360;
         final int BUCKET_HEIGHT = 4300;
         final int Y_HOME = 0;
         final double Y_SLOW = 0.25;
@@ -126,8 +126,8 @@ public class servoTest extends LinearOpMode {          //104mm diameter    5281.
              */
             if (gamepad2.b) {
                 clawClamp.setPosition(1);
-                rightClawPos.setPosition(1);
-                leftClawPos.setPosition(0);
+                rightClawPos.setPosition(0.95);
+                leftClawPos.setPosition(0.05);
 
                 clawAngle.setPosition(0.35);
                 leftX.setPosition(0);
@@ -242,10 +242,10 @@ public class servoTest extends LinearOpMode {          //104mm diameter    5281.
             }
 
             if (gamepad1.left_bumper) {
-                clawClamp.setPosition(1);
+                clawClamp.setPosition(0.75);
             }
             if (gamepad1.right_bumper) {
-                clawClamp.setPosition(0.75);
+                clawClamp.setPosition(1.0);
             }/**
             if (gamepad1.right_bumper) {
                 clawAngle.setPosition(0.2);

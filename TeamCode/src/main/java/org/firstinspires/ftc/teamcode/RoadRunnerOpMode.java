@@ -149,8 +149,8 @@ public class RoadRunnerOpMode extends LinearOpMode {
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 clawClamp.setPosition(1);
                 clawWrist.setPosition(0);
-                leftX.setPosition(0.5);
-                rightX.setPosition(0.5);
+                leftX.setPosition(0.6);
+                rightX.setPosition(0.4);
                 leftClawPos.setPosition(0.75);
                 rightClawPos.setPosition(0.25);
                 clawAngle.setPosition(0.15);
@@ -169,10 +169,23 @@ public class RoadRunnerOpMode extends LinearOpMode {
         SlidesY slidesY = new SlidesY(hardwareMap);
         Claw claw = new Claw(hardwareMap);
 
-        /*
+
         TrajectoryActionBuilder path1 = drive.actionBuilder(initialPose)
-                .splineTo(new Vector2d(-31.15354,0), Math.toRadians(0));
-        TrajectoryActionBuilder push = drive.actionBuilder(new Pose2d(-31.15354, 0, Math.toRadians(0)))
+                .splineToConstantHeading(new Vector2d(30,0), Math.toRadians(0));
+        TrajectoryActionBuilder push = drive.actionBuilder(new Pose2d(30, 0, Math.toRadians(0)))
+                .splineTo(new Vector2d(30,-36), Math.toRadians(0)) // intermediate
+                .splineTo(new Vector2d(30,-48), Math.toRadians(0)) //  back of block 1
+                .splineTo(new Vector2d(30,-20), Math.toRadians(0)) // push block 1
+                .splineTo(new Vector2d(30,20), Math.toRadians(0)) // go to back of block 2
+                .splineTo(new Vector2d(66, -48), Math.toRadians(180)) // push block 2
+                .splineTo(new Vector2d(0,0), Math.toRadians(180)) // go to back of block 3
+                .splineTo(new Vector2d(-66,-48), Math.toRadians(180)) // push block 3
+                .splineTo(new Vector2d(0,0), Math.toRadians(180)); // go to pickup point
+        TrajectoryActionBuilder pickup = drive.actionBuilder(new Pose2d(30, 3, Math.toRadians(0)))
+                .splineTo(new Vector2d(0,0), Math.toRadians(0)); // go to pickup point
+        TrajectoryActionBuilder dropoff =  drive.actionBuilder(new Pose2d(30, 3, Math.toRadians(0)))
+                .splineTo(new Vector2d(-31.15354,3), Math.toRadians(90));
+       /** TrajectoryActionBuilder push = drive.actionBuilder(new Pose2d(-31.15354, 0, Math.toRadians(0)))
                 .splineTo(new Vector2d(-24,-36), Math.toRadians(180)) // intermediate
                 .splineTo(new Vector2d(-18,-48), Math.toRadians(180)) //  back of block 1
                 .splineTo(new Vector2d(-66,-48), Math.toRadians(180)) // push block 1
@@ -184,8 +197,8 @@ public class RoadRunnerOpMode extends LinearOpMode {
         TrajectoryActionBuilder pickup = drive.actionBuilder(new Pose2d(-31.15354, 3, Math.toRadians(90)))
                 .splineTo(new Vector2d(), Math.toRadians(0)); // go to pickup point
         TrajectoryActionBuilder dropoff =  drive.actionBuilder()
-                .splineTo(new Vector2d(-31.15354,3), Math.toRadians(90)); // go to dro0poff point
-         */
+                .splineTo(new Vector2d(-31.15354,3), Math.toRadians(90)); // go to dropoff point*/
+
 
         Actions.runBlocking(claw.closeClaw());
 
@@ -194,16 +207,13 @@ public class RoadRunnerOpMode extends LinearOpMode {
         if (isStopRequested()) return;
 
         Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(0,0,Math.toRadians(0)))
-                        .splineTo(new Vector2d(3,3), Math.toRadians(90))
-                        .build()
-                /*
+
                 new SequentialAction(
                         new ParallelAction(
-                                claw.closeClaw(),
+                                //claw.closeClaw(),
                                 path1.build(),
-                                slidesY.armUp(),
-                                claw.goToHook(),
+                                //slidesY.armUp(),
+                                //claw.goToHook(),
                                 path1.endTrajectory().fresh().build()
                         ),
                         claw.hook(),
@@ -237,8 +247,6 @@ public class RoadRunnerOpMode extends LinearOpMode {
                                 dropoff.endTrajectory().fresh().build()
                         )
                 )
-
-                 */
         );
     }
 }
